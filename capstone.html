@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<title>Capstone Project Breakdown</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+
+<!-- w3-content defines a container for fixed size centered content, 
+	and is wrapped around the whole page content, except for the footer in this example -->
+	<div class="w3-content" style="max-width:1400px">
+
+		<!-- Header -->
+		<header class="w3-container w3-left w3-padding-32"> 
+			<h1><b>Capstone Project Breakdown</b></h1>
+			<p><span class="w3-tag">Last Updated in November 2019</span></p>
+				 <div class="w3-row">
+        			<div class="w3-col m8 s12">
+          				<form action="homepage.html">
+            				<p><button class="w3-button w3-padding-large w3-white w3-border"><b>GO HOME »</b></button></p>
+          				</form>
+        			</div>
+      			</div>
+		</header>
+
+		<div class="w3-row">
+			<div class="w3-container">
+				<h2>Project Description</h2>
+				<p><i>We would like the group of students to investigate implementing a Data Warehouse solution (my preference being AWS Redshift) using our current database schema adopted for a DW. This DW would have 2 key uses, one for internal aggregate and querying (non anonymized) and one that would house anonymous data from all purchases, campaigns and users interacting with our Fundraising pages. I see the latter as a subset of the former and does not need to be within the scope of the project itself as asking for a DW implementation may already be a lot. As for a deliverables we would expect from the group we were thinking providing a couple of key business questions that my colleagues that deal with sales, marketing and customer success have and could use to help increase the retention and success of our customers fundraisers. The students would then build a data warehouse that ensured the types of questions we needed answered could be. They will be exposed to code written in Typescript in the Angular and Nestjs frameworks but will not necessarily be writing much of that code themselves, more so leveraging some kind of data warehouse solution such as AWS redshift and SQL for large queries. They will be responsible for migrating and transforming Our production data into a usable structure for a DW, I am not tied to one specific technology for this, but would like an intelligent option suggested and continued with once we look into it. If the project comes to it after requirements have been defined, some kind of API (using Nestjs and TypeScript) that can be integrated into our internal dashboard would be helpful to show the results of the queries based around our business use cases. If it comes to this they will be interacting with our monorepo taking advantage of a software called Nx by Nrwl which allows code sharing across all of our projects. We can commit to all of those, I will be involved at the start and end of the project with our R&D lead managing the project throughout. I will of course be available throughout the project if my help is needed. I think this is a great opportunity for the students as we will be exposing them to a large range of real world technologies and design patterns as well as giving them the opportunity to start with research and come to a conclusion then build a solution from that.</i></p>
+			</div>
+			<div class="w3-container">
+				<h3>System Architecture</h3>
+				<h4>DFD 1</h4> 
+				<img align='left' src="../res/DFD1-Main.png" alt="DFD1" style="width:80%"> <br />
+				</br>
+			</div>
+			<div class="w3-container">
+				<h3>UI Mockups</h3>
+				<p><img align='left' src="../res/UI-Mockup2-FundraiserView.png" alt="fundraiserview" style="width:50%"> <img align='left' src="../res/UI-Mockup2-OrganizationView.png" alt="organizationview" style="width:50%"></p>
+				<br>
+			</div>
+			<div class="w3-container">
+				<h2>Technical Specifications</h2>
+				<h3>Amazon Redshift</h3>
+				<p>Tellis has experience using AWS and has a credit to go towards amazon services, making
+					RedShift as our Data Warehouse of choice. Keeping Trellis in a familiar ecosystem, having the
+					reliability of Amazon's cloud services, and having a Data Warehouse that fulfills their needs
+					while at a reasonable, pay-for-what-you-use, price point is why we chose RedShift over Data
+					Warehouse service like Google BigQuery and Snowflake . BigQuery is a less cost effective
+					option if the company does not plan to use it frequently and does not require many large
+					queries. RedShift, on the other hand, has predictable hourly rate or an option to pay upfront for
+					1 or 3 years (at a deep discount) at a much lower and predictable rate than BigQuery can offer.
+					There is a further breakdown of RedShift, Snowflake, BigQuery, as well as Microsoft Azure SQL
+					Data Warehouse that we brought to our client to help make our decision which can be found in
+					the pages following this section.
+				</p>
+				<h3>Stitch Data</h3>
+				<p>To Extract the data from Trellis’ various data sources and integrate it into Amazon RedShift, we
+					chose to go with Stitch Data. Stitch Data is an ETL tool that will help us Extract, Transform, and
+					load our client’s data sources into our data warehouse. Stitch supports all of the data sources
+					required by Trellis as well as RedShift. Informatica, another ETL tool, has less transparent
+					pricing and requires a locked in annual contract. While another ETL tool, AWS Glue, has a less
+					predictable, hourly, pricing and would require us to orchestrate Glue to work for our needs
+				where Stitch Data supports what we need out of the box</p>
+				<h3>Typescript</h3>
+				<p>Typescript was outlined by our client to be requirement for our project as it is what they are
+					familiar with. Typescript is a strongly type language that, when compiled, gets translated into
+					javascript, essentially making it a more familiar-feeling, object-oriented style language with some
+					additional error checking over Javascript. Java is a language with similar benefits as Typescript
+					has over Javascript. We are also familiar with Java, however, Typescript can be used for both
+					back-end server side programming as well as having the benefit of Javascript for any front-end
+					client side programming we need. Being able to use one language for our project that the
+					developers at Trellis are used to using outweigh the benefits of Java.
+				</p>
+				<h3>NestJS</h3>
+				<p>Nest.js was also a requirement from our client for our project. Nest.js is an angular styled
+					wrapper for Node.js and Express.js which enables us to create server-side applications using
+					typescript. Nest.js is an opinionated framework, that is, it will help guide the structure of our
+					project, which should help our project be more maintainable. This is as opposed to an
+					un-opinionated framework, like Express.js. This should hopefully allow us to build a more
+					cohesive project, while still allowing us to use the features of Express.js. Nest.js implements the
+					functionality of a typical Node.js framework, however, Nest.js introduces tools and structure to
+					better organize our project over plain old Node.js. This should allow our code to be a bit more
+				readable and maintainable when we hand our project off to Trellis.</p>
+			</div>

@@ -1,7 +1,236 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<title>Website CV</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+
+<!-- w3-content defines a container for fixed size centered content, 
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+<!-- Header -->
+<header class="w3-container w3-center w3-padding-32"> 
+  <h1><b>Michael Sheroubi</b></h1>
+  <p><span class="w3-tag">Last Updated in November 2019</span></p>
+</header>
+
+<!-- Grid -->
+<div class="w3-row">
+
+<!-- Blog entries -->
+  <hr>
+
+  <!-- Row Blog entry -->
+  <div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <h3><b>Roubi Analytics</b> <img align='right' src="../res/Roubi-Header.png" alt="Roubi" style="width:20%"></h3>
+      <h5><span class="w3-opacity">Ongoing Since May 2019</span></br>Data Analytics and Consulting Firm</h5>
+    </div>
+    
+    <div class="w3-container">
+      <p>An IT firm specializing in data-centric solutions. Focus on database design, implementation, data migration. Goal is to expand into data analysis.</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <form action="roubi.html">
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columns -->
+  <div class="w3-col l8 s12">
+    <!-- Blog entry -->
+    <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <h3><b>Run-AI</b> <img align='right' src="../res/runguy.png" alt="Run Character" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">December 2017</span></br>Using OpenCV to train a Convolutional Neural Network </h5>
+      </div>
+  
+      <div class="w3-container">
+        <p>Using OpenCV's edge detection as the input, the CNN (Convolutional Neural Network) was fed hours of training data. This was my first project working with neural networks, while I did write my own simple neural network, I resorted to using AlexNet as it has proven to get better results. What I found more fascinating was the use of OpenCV throughout this project. I was initially going to re-program the game myself as it seemed like a simple enough game, but I had the idea of getting the input from some screen recorder, and using something like PyAutoGUI for output.</p>
+        <div class="w3-row">
+          <div class="w3-col m8 s12">
+            <form action="run_ai.html">
+              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <h3><b>Honour's Thesis</b> <img align='right' src="../res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">September 2019 - April 2020</span></br>Benchmarking the Graph vs. Relational Models</h5>
+      </div>
+  
+      <div class="w3-container">
+        <p>The project focus was the database aspect of a social media site. It encompasses the data modelling, application architecture decisions, testing, capacity planning, and importing/loading of bulk data (or in this case data generation). After the database was setup, the focus will shift towards designing ad hoc queries (“saved cypher queries”) to answer questions posed by the social media (e.g. matching common interests). This project did not involve the integration of the database into the website or any frontend programming. The performance & complexity for Neo4j and SQL server are compared throughout the process.</p>
+        <div class="w3-row">
+          <div class="w3-col m8 s12">
+            <form action="honours.pdf">
+              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-card-4 w3-margin w3-white">
+      <div class="w3-container">
+        <h3><b>Capstone Project</b> <img align='right' src="../res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">September 2019 - April 2020</span></br>Data Warehouse Design and Implementation</h5>
+      </div>
+  
+      <div class="w3-container">
+        <p>This project was centred around building a Data Warehouse (DW) to house checkouts and fundraiser related data. My team was responsible for building out a strategy and implementing a data warehouse using Trellis’ predefined classes and schema. This project encompassed the DW, a simple RESTful server written in TypeScript using the NestJS framework, from end widgets that are reuseable in the existing project that display stats, these stats covered business use case questions that needed to be answered from queries run on the DW.</p>
+        <div class="w3-row">
+          <div class="w3-col m8 s12">
+            <form action="capstone.pdf">
+              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <h3><b>NOVA</b> <img align='right' src="../res/NOVA.jpg" alt="TicketWizard" style="width:20%"></h3>
+      <h5><span class="w3-opacity">Ongoing Since 2014</span></br>Personal Assistant AI - NOVA</h5>
+    </div>
+
+    <div class="w3-container">
+      <p>Piling everything I have ever learned into this one project. A lot of trial and error. A lot of failure and a lot of dead ends. This has been my goal since I began coding. To create a personal assistant like Siri or Alexa. It is the reason I gravitated towards Artificial Intelligence and Data Analysis. The ultimate goal is for NOVA to not need to get hard-coded features. It should make it's own decisions based on it's own calculations. This project started off as Project B.R.A.I.N. and has been now given the name NOVA.</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <form action="nova.html">
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <h3><b>Nova-Graph</b> <img align='right' src="../res/graph_Neo-300x173.png" alt="TicketWizard" style="width:20%"></h3>
+      <h5><span class="w3-opacity">Ongoing December 2018</span></br>Graph Theory and AI Experiment</h5>
+    </div>
+
+    <div class="w3-container">
+      <p>A new approach towards building the "memory" of NOVA. The idea is store words as nodes of a graph in high-dimensional space. Nodes would connect based on their position in this space, these node positions will be determined by word associations. Word associations are instances where a string/statement contains two or more words. The wrapper around the Nova-Graph will be another project, where text is broken down and analyzed, outputing clean data representing word associations to be added.
+        The main idea is for NOVA to be able to define words, not from a prewritten definition, but from the network around their axis.
+      </p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <form action="nova_graph.html">
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <h3><b>Ticket Wizard</b> <img align='right' src="../res/titlelogo.jpg" alt="TicketWizard" style="width:30%"></h3>
+      <h5><span class="w3-opacity">November 2018</span></br>A Social Media Platfrom for events </h5>
+    </div>
+
+    <div class="w3-container">
+      <p>Fed up with ticket 'handling' fees from online ticket vendors, I decided to create my own ticketting site that would not charge so much. The idea began as a simple buy & sell page, but it grew into what I would describe as a "Social Media Platform for Events". Where any user can create/browse events. There is nothing particularly 'innovative' about this project, it was a good way to get more practice with a lot of different aspects of web development and database design. It has a lot of functionallity and I personally enjoyed working on this project. It was one of the only major projects I've worked on where the challenge was not to figure out a clever way to solve a problem, but instead the challenge was to get as much functionallity onto the platform while also focusing on efficiency.</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <form action="ticket_wizard.html">
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- END BLOG ENTRIES -->
+</div>
+
+<!-- Introduction menu -->
+<div class="w3-col l4">
+  <!-- About Card -->
+  <div class="w3-card w3-margin w3-margin-top">
+
+    <div class="w3-container w3-white">
+      <p>
+        <b>Certification: </b> </br>
+        <i>University of British Columbia</i> </br>
+        BSc. Honours Computer Science </br>
+        Minor in Mathematics </br>
+        Completed requirements for Minor in Data Science </br>
+        Certified Neo4j Professional
+        </br></br>
+
+        <b>Areas of Expertise:</b> </br>
+        *** Automation & Scripting</br>
+        *** Database Design</br>
+        *** Data Migration</br>
+        ** Machine Learning and Neural Networks</br>
+        ** Financial Data Analysis</br>
+        ** Computer Vision</br>
+        ** Natural Language Processing</br>
+        * Web Development</br>
+        * Android App Development</br>
+        <i>See Personal Projects for more details</i></br></br>
+
+        <b>Knowledge Base:</b> </br>
+        Python </br>
+        Java </br>
+        SQL </br>
+        C# and C++</br>
+        HTML/CSS </br>
+        .NET Frameowrk</br>
+        R </br>
+
+        Hadoop/Spark </br>
+        OpenCV </br>
+        TensorFlow </br>
+        Pandas </br>
+        Neo4J and Cypher</br>
+      </p>
+    </div>
+  </div><hr>
+  <div class="w3-card w3-margin w3-margin-top">
+
+    <div class="w3-container w3-white">
+      <p>
+        <b>About: </b> </br>
+        Email: m.sheroubi@alumni.ubc.ca</br>
+        Phone: +1 (778) 858-0920</br>
+        <a href="https://www.linkedin.com/in/michael-sheroubi">LinkedIn<a></br>
+          <a href="https://github.com/msheroubi">Github<a></br>
+
+      </p>
+    </div>
+  </div><hr>
+  
+<!-- END Introduction Menu -->
+</div>
+
+<!-- END GRID -->
+</div><br>
+
+<!-- END w3-content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
+	<h5>What one programmer can do in a month, two programmers can do in two months. - Fred Brooks</h5>  
+</footer>
+
 </body>
 </html>

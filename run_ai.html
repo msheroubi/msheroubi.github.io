@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<title>Run-AI Breakdown</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+
+<!-- w3-content defines a container for fixed size centered content, 
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+<!-- Header -->
+<header class="w3-container w3-left w3-padding-32"> 
+  <h1><b>Run-AI Breakdown</b></h1>
+  <p><span class="w3-tag">December 2017</span></p>
+</header>
+
+<div class="w3-row">
+			<div class="w3-container">
+				<h3>Task</h3>
+				<p>Get the Alien to run through the level without falling.</p>
+
+				<h3>My Solution</h3>
+				<p>Train a neural network using a images captured from the game window.</p>
+			</div>
+			<div class="w3-container">
+				<h2>Image Processing</h2>
+				<h3>Step 1: (a) Screen Capture</h3>
+				<p>To keep the screen capture parameters consistent, I took a screen cap of the window resized to fit the game window and placed it in the corner of the screen. I changed my desktop background to this image while I worked on this project. From there I used OpenCV to capture the screen from this window. </p> 
+				<img align='middle' src="../res/run_step1a.png" alt="step1a" style="width:80%"> <br />
+				</br>
+				<h3>Step 1: (b) Isolating the ROI (Region of Interest)</h3>
+				<p>Since I was planning on using a Neural Network, I knew that I should limit the input as much as I could to only what is needed to make a decision on how to move the alien.</p>
+				<img align='middle' src="../res/run_step1b.png" alt="step1b" style="width:40%"> <br />
+				<p>*This is the general shape and location, but not exactly what was used. I lost the files for this project so I don't have the exact coordinates. The real dimensions of the trapezoid were selected with some trial and error.</p>
+				<h3>Step 1: (c) Canny Edge Detection and Hough Transform</h3>
+				<p>The next step is to apply canny edge dection. This is crucial in order to apply the hough transform to extract the lines from the ROI. The lines will be the inputs for the neural network as they show the edges where the Alien can fall, which I thought was the main information the neural network needed to know.</p>
+				<img align='middle' src="../res/run_step1c.png" alt="step1c" style="width:40%"> <br />
+			</div>
+			<div class="w3-container">
+				<h2>The Neural Network</h2>
+				<h3>AlexNet</h3>
+				<p>AlexNet is a Convultional Neural Network (CNN) designed by Alex Krizhevsky from UofT. This was designed for Image Classification and computer vision. While doing research to design my own network, I stumbled upon AlexNet. Since I was going to feed the neural network image data and corresponding movements (how the alien was going to move given a specific line), I figured it should fit in perfectly.</p> 
+				</br>
+				<h3>The Movement Vector</h3>
+				<p>The range of movement is fairly limited in this game. You can do one of three things: go left, go right or jump. How high the jump depends on how long you press the key, but since the ROI was fairly small, it was not expected to make any long jumps. So the movement vector was only 3-dimensions.</p>
+				<h3>Training</h3>
+				<p>As much as I would've liked to have the neural network train itself, I had to feed it training data. Manually. So I played the game for hours collecting training data. After the data was collected, I started training the model. I did an 80/20 split, 80% of the data was used to train the model and 20% to test it.</p>
+			</div>
