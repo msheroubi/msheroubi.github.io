@@ -5,8 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="blogstyle.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 10%;
+}
+.fa:hover {
+  opacity: 0.7;
+}
 </style>
 <body class="w3-light-grey">
 
@@ -16,8 +28,17 @@ and is wrapped around the whole page content, except for the footer in this exam
 
 <!-- Header -->
 <header class="w3-container w3-center w3-padding-32"> 
-  <h1><b>Michael Sheroubi</b></h1>
-  <p><span class="w3-tag">Last Updated in June 2020</span></p>
+  <h1 align="left"><b>&nbsp;Michael Sheroubi</b><img align='right' src="./res/cropped_headshot.jpg" alt="headshot" style="padding:1px; border: thin solid black; width:15%;"></h1>
+
+  <p align="left">&nbsp;&nbsp;&nbsp;<span class="w3-tag">Last Updated in December 2022</span> <br>
+    <br>
+    <a href="resume.pdf" class="fa fa-file"></a>
+    <a href="https://github.com/msheroubi" class="fa fa-github"></a>
+    <a href="https://www.linkedin.com/in/michael-sheroubi/" class="fa fa-linkedin"></a>
+    <a href="https://www.instagram.com/michaelsheroubi" class="fa fa-instagram"></a>
+    <a href="https://www.facebook.com/michael.sheroubi/" class="fa fa-facebook"></a>
+    <a href="https://www.youtube.com/@tayeh1036" class="fa fa-youtube"></a>
+  </p> 
 </header>
 
 <!-- Grid -->
@@ -25,23 +46,15 @@ and is wrapped around the whole page content, except for the footer in this exam
 
 <!-- Blog entries -->
   <hr>
-
   <!-- Row Blog entry -->
   <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
-      <h3><b>Roubi Analytics</b> <img align='right' src="../res/Roubi-Header.png" alt="Roubi" style="width:20%"></h3>
-      <h5><span class="w3-opacity">Ongoing Since May 2019</span></br>Data Analytics and Consulting Firm</h5>
+      <h3><b>Summary</b></h3>
     </div>
-    
+
     <div class="w3-container">
-      <p>An IT firm specializing in data-centric solutions. Focus on database design, implementation, data migration. Goal is to expand into data analysis.</p>
-      <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <!-- <form action="roubi.html">
-            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-          </form> -->
-        </div>
-      </div>
+      <p>Language and AI enthusiast with a wide breadth of knowledge. Experience working with SQL & NoSQL databases, building ETL pipelines, and writing automation scripts in Python. 
+      <br>Lifelong learner.</p>
     </div>
   </div>
 
@@ -50,15 +63,15 @@ and is wrapped around the whole page content, except for the footer in this exam
     <!-- Blog entry -->
     <div class="w3-card-4 w3-margin w3-white">
       <div class="w3-container">
-        <h3><b>Run-AI</b> <img align='right' src="../res/runguy.png" alt="Run Character" style="width:10%"></h3>
-        <h5> <span class="w3-opacity">December 2017</span></br>Using OpenCV to train a Convolutional Neural Network </h5>
+        <h3><b>Run-AI</b> <img align='right' src="./res/runguy.png" alt="Run Character" style="width:10%"></h3>
+        <h5> Using OpenCV to train a Convolutional Neural Network </h5>
       </div>
   
       <div class="w3-container">
-        <p>Using OpenCV's edge detection as the input, the CNN (Convolutional Neural Network) was fed hours of training data. This was my first project working with neural networks, while I did write my own simple neural network, I resorted to using AlexNet as it has proven to get better results. What I found more fascinating was the use of OpenCV throughout this project. I was initially going to re-program the game myself as it seemed like a simple enough game, but I had the idea of getting the input from some screen recorder, and using something like PyAutoGUI for output.</p>
+        <p>Using OpenCV's edge detection as the input, the CNN (Convolutional Neural Network) was fed hours of training data. This was my first project working with neural networks. While I did write my own simple neural network, I resorted to using AlexNet since it got better results. I learned how to use OpenCV to process live image data which was pretty exciting.</p>
         <div class="w3-row">
           <div class="w3-col m8 s12">
-            <form action="run_ai.html">
+            <form action="https://github.com/msheroubi/run-AI">
               <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
             </form>
           </div>
@@ -68,12 +81,14 @@ and is wrapped around the whole page content, except for the footer in this exam
 
     <div class="w3-card-4 w3-margin w3-white">
       <div class="w3-container">
-        <h3><b>Honour's Thesis</b> <img align='right' src="../res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
-        <h5> <span class="w3-opacity">September 2019 - April 2020</span></br>Benchmarking the Graph vs. Relational Models</h5>
+        <h3><b>Honour's Thesis</b> <img align='right' src="./res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">September 2019 - April 2020</span></br>Benchmarking performance for Neo4j in a Social
+Media Application
+</h5>
       </div>
   
       <div class="w3-container">
-        <p>The project focus was the database aspect of a social media site. It encompasses the data modelling, application architecture decisions, testing, capacity planning, and importing/loading of bulk data (or in this case data generation). After the database was setup, the focus will shift towards designing ad hoc queries (“saved cypher queries”) to answer questions posed by the social media (e.g. matching common interests). This project did not involve the integration of the database into the website or any frontend programming. The performance & complexity for Neo4j and SQL server are compared throughout the process.</p>
+        <p>Comparing the performance of Neo4j and SQL Server inside a social media application. The project involved data modelling, application architecture decisions, testing, and importing  bulk data. After the database setup, the focus shifted towards designing queries to get information from the social network.</p>
         <div class="w3-row">
           <div class="w3-col m8 s12">
             <form action="honours.pdf">
@@ -86,16 +101,16 @@ and is wrapped around the whole page content, except for the footer in this exam
 
 
   <div class="w3-card-4 w3-margin w3-white">
-    <div class="w3-container">
-      <h3><b>NOVA</b> <img align='right' src="../res/NOVA.jpg" alt="Nova" style="width:20%"></h3>
-      <h5><span class="w3-opacity">Ongoing Since 2014</span></br>Personal Assistant AI - NOVA</h5>
+        <div class="w3-container">
+      <h3><b>Roubi Analytics</b> <img align='right' src="./res/Roubi-Header.png" alt="Roubi" style="width:20%"></h3>
+      <h5>Data Analytics and Consulting Firm</h5>
     </div>
-
+    
     <div class="w3-container">
-      <p>Piling everything I have ever learned into this one project. A lot of trial and error. A lot of failure and a lot of dead ends. This has been my goal since I began coding. To create a personal assistant like Siri or Alexa. It is the reason I gravitated towards Artificial Intelligence and Data Analysis. Played around with various libraries to implement and scrap various features. Most notable is getting text-to-speech using a TensorFlow implementation of Google's Tacotron with a pre-trained model. </p>
+      <p>An consulting firm specializing in data-centric solutions. Focus on database design, implementation, data migration.</p>
       <div class="w3-row">
         <div class="w3-col m8 s12">
-          <!-- <form action="nova.html">
+          <!-- <form action="roubi.html">
             <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
           </form> -->
         </div>
@@ -105,18 +120,16 @@ and is wrapped around the whole page content, except for the footer in this exam
 
   <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
-      <h3><b>Nova-Graph</b> <img align='right' src="../res/graph_Neo-300x173.png" alt="Nova-Graph" style="width:20%"></h3>
-      <h5><span class="w3-opacity">Ongoing December 2018</span></br>Graph Theory and AI Experiment</h5>
+      <h3><b>Nova-Graph</b> <img align='right' src="./res/graph_Neo-300x173.png" alt="Nova-Graph" style="width:20%"></h3>
+      <h5>Graph Theory and NLP Research</h5>
     </div>
 
     <div class="w3-container">
-      <p>A new approach towards building the "memory" of NOVA. The idea is store different words as nodes of a graph in high-dimensional space. Nodes would connect based on their position in this space, these node positions will be determined by word associations. Word associations are instances where a string/statement contains two or more words. In short, instead of having a dictionary with a predefined definition for each word, the words are defined by their neighbours. The challenge is still how to extract meaningful relationships and nodes from a piece of text (Big NLP Problem 1) and how to display query results in a meaningful output (NLP Problem 2).
+      <p>A new approach towards building the "memory" of a virtual agent, NOVA. The aim is to create a knowledge-graph in high-dimensional space. Nodes would form relationships based on their position in this space. Their position in this space will change based on input from training texts. In short, each word would be defined by its neighbours inside this graph. The challenge is how to extract meaningful relationships and nodes from a piece of text (Big NLP Problem 1) and how to display query results in a meaningful output (NLP Problem 2).
       </p>
       <div class="w3-row">
         <div class="w3-col m8 s12">
-          <!-- <form action="nova_graph.html">
-            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-          </form> -->
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>TALK TO ME ABOUT THIS!</b></button></p>
         </div>
       </div>
     </div>
@@ -124,10 +137,9 @@ and is wrapped around the whole page content, except for the footer in this exam
 
     <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
-      <h3><b>Analog Clock Reader</b> <img align='right' src="../res/clock1.jpg" alt="Clock" style="width:30%"></h3>
-      <h5><span class="w3-opacity">April 2019</span></br>Read time from an Analog Clock</h5>
+      <h3><b>Analog Clock Reader</b> <img align='right' src="./res/clock1.jpg" alt="Clock" style="width:12%"></h3>
+      <h5>Read time from an Analog Clock</h5>
     </div>
-
     <div class="w3-container">
       <p>The main purpose of this project is to develop a model for analog clock identification and to
 implement a program that would be able to read a given image and return the time displayed
@@ -136,13 +148,13 @@ and detect and highlight hands using Canny edge detection with Hough transform, 
 calculate the angles between the hands to a given time in hours, minutes and seconds
 respectively. One of the related works similar to this project is “An analog gauge reader”.
 </p>
-      <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <<!-- form action="ticket_wizard.html">
-            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-          </form> -->
+<div class="w3-row">
+          <div class="w3-col m8 s12">
+            <form action="https://github.com/msheroubi/AnalogClockReader">
+              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            </form>
+          </div>
         </div>
-      </div>
     </div>
   </div>
 <!-- END BLOG ENTRIES -->
@@ -150,87 +162,77 @@ respectively. One of the related works similar to this project is “An analog g
 
 <!-- Introduction menu -->
 <div class="w3-col l4">
+  <div class="w3-card w3-margin w3-margin-top">
+
+    <div class="w3-container w3-white">
+      <p>
+        <b>Contact: </b> </br>
+        Email: msheroubi@gmail.com</br>
+      </p>
+    </div>
+  </div><hr>
+  
+
   <!-- About Card -->
   <div class="w3-card w3-margin w3-margin-top">
 
     <div class="w3-container w3-white">
       <p>
-        <b>Certification: </b> </br>
-        <i>University of British Columbia</i> </br>
-        BSc. Honours Computer Science </br>
+        <h6>Education: </h6>
+        <b>University of British Columbia</b></br>
+        <i> BSc. Honours Computer Science </i></br>
         Minor in Mathematics </br>
-        Completed requirements for Minor in Data Science </br>
-        Certified Neo4j Professional
-        </br></br>
+        Specialization in Data Science </br>
+        GPA 3.90/4.33<br>
+
+        <h6>Certifications: </h6>
+        CompTIA Security+</br>
+        Google Data Analytics </br>
+        Certified Neo4j Professional </br>
+        </br>
 
         <b>Areas of Expertise:</b> </br>
-        *** Automation & Scripting</br>
+        ***** Automation & Scripting</br>
         *** Database Design</br>
         *** Data Migration</br>
+        *** Data Analysis</br>
         ** Image Processing & Computer Vision </br>
         ** Machine Learning & Neural Networks</br>
-        ** Data Analysis</br>
-        ** Financial Data Analysis</br>
-        ** Natural Language Processing</br>
-        * Web Development</br>
-        * Android App Development</br>
-        <i>See Personal Projects for more details</i></br></br>
+      </br>
 
-        <b>Knowledge Base:</b> </br>
-        <i>Languages: </i></br>
-        **** Python </br>
+      <b>Areas of Interest:</b> </br>
+        ***** Natural Language Processing</br>
+        ***** Artificial Intelligence <br>
+        *** Graph Theory<br>
+
+      <br>
+        <b>Tool Box: </b></br>
+        <i>Languages:</i></br>
+        ***** Python </br>
         **** SQL </br>
-        *** Java </br>
-        ** JavaScript / TypeScript </br>
-        ** HTML/CSS </br>
-        ** .NET Frameowrk</br>
-        ** Ruby </br>
-        * C# and C++</br>
-        * R </br> </br>
+        ** R </br>
+        ** Java </br>
+        <br>
 
         <i>Libraries / Frameworks: </i></br>
-        *** Pandas </br>
-        *** OpenCV </br>
-        *** TensorFlow </br>
+        **** Pandas </br>
+        ** OpenCV </br>
+        ** TensorFlow </br>
         ** Django </br>
-        ** NodeJS / NestJS </br>
-        ** Hadoop / Spark </br>
-        * Ruby On Rails </br>
-        * PyTorch </br>
-        * Angular</br></br>
+        <br>
 
-        <i>Tools / Platforms / Databases</i></br>
-        *** AWS Redshift </br>
-        *** Neo4j </br>
-        *** MongoDB</br>
-        *** SQLServer </br>
-        ** Postgres </br>
-        ** Stitch Data </br>
-        ** Talend OpenStudio </br>
-        * AWS RDS </br>
-        * Snowflake </br>
-        * Big Query </br></br>
+        <i>Other:</i></br>
+        **** Excel </br>
+        *** Github <br>
+        *** VS Code <br>
+        <br>
+
 
 
         <a href="Testimonials.pdf">Capstone Peer Evaluations<a></br>
       </p>
     </div>
   </div><hr>
-  <div class="w3-card w3-margin w3-margin-top">
-
-    <div class="w3-container w3-white">
-      <p>
-        <b>About: </b> </br>
-        Email: msheroubi@gmail.com</br>
-        Phone: +1 (778) 858-0920</br>
-        <a href="https://www.linkedin.com/in/michael-sheroubi">LinkedIn<a></br>
-          <a href="https://github.com/msheroubi">Github<a></br>
-            
-
-      </p>
-    </div>
-  </div><hr>
-  
 <!-- END Introduction Menu -->
 </div>
 
