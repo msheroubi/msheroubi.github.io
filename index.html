@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<title>Website CV</title>
+<title>MS: Resume</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="blogstyle.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+body,h1,h2,h3,h4,h5, h6 {font-family: "Raleway", sans-serif; color: black}
 .fa {
   padding: 20px;
   font-size: 30px;
@@ -15,6 +15,7 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   text-align: left;
   text-decoration: none;
   border-radius: 10%;
+  color:  black;
 }
 .fa:hover {
   opacity: 0.7;
@@ -30,7 +31,7 @@ and is wrapped around the whole page content, except for the footer in this exam
 <header class="w3-container w3-center w3-padding-32"> 
   <h1 align="left"><b>&nbsp;Michael Sheroubi</b><img align='right' src="./res/cropped_headshot.jpg" alt="headshot" style="padding:1px; border: thin solid black; width:15%;"></h1>
 
-  <p align="left">&nbsp;&nbsp;&nbsp;<span class="w3-tag">Last Updated in December 2022</span> <br>
+  <p align="left">&nbsp;&nbsp;&nbsp;<span class="w3-tag" style="background-color: orangered;">Last Updated in December 2022</span> <br>
     <br>
     <a href="resume.pdf" class="fa fa-file"></a>
     <a href="https://github.com/msheroubi" class="fa fa-github"></a>
@@ -49,12 +50,33 @@ and is wrapped around the whole page content, except for the footer in this exam
   <!-- Row Blog entry -->
   <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
-      <h3><b>Summary</b></h3>
+      <h3 align="center"><b>Relevant Experience</b></h3>
     </div>
 
     <div class="w3-container">
-      <p>Language and AI enthusiast with a wide breadth of knowledge. Experience working with SQL & NoSQL databases, building ETL pipelines, and writing automation scripts in Python. 
-      <br>Lifelong learner.</p>
+      <h6><b>Data Analyst & Support</b> 2020-Ongoing<br>Clearmind International</h6>
+
+      <p><li>Developed an ETL solution using Python to migrate over 7 years of historical data; from legacy systems & csv files to a 
+      cloud-based solution. </li>
+      <li>Designed OLTP database to handle simultaneous transactions by 20+ instructors while maintaining ACID compliance & data 
+      integrity. </li>
+      <li>Normalized transcript data to improve query performance, reducing query run-time by over 75% and increasing accuracy of 
+      search results. </li>
+      <li>Optimized registration process by modelling its flow of data and removing waste, trimming operational costs by 23%. </li>
+      <li>Ensured enterprise-wide compliance with federal & international data protection regulations </li>
+      </p>
+    </div>
+
+     <div class="w3-container">
+      <h6><b>Data Warehouse Engineer</b> 2019-2020<br>Trellis Social Enterprise</h6>
+
+      <p> 
+        <li> Designed, developed, and implemented a data warehouse solution using Redshift to house data from the production mongoDB along with data from 5 3rd party sources. </li>
+        <li> Developed an ETL solution (from the ground up) to migrate data in batches from mongo DB to the data warehouse using 
+Python & windows task scheduler. </li>
+<li>Created automated test procedures to validate data integrity.</li>
+<li>Designed complex SQL procedures called by the company’s internal dashboard.</li>
+      </p>
     </div>
   </div>
 
@@ -63,8 +85,8 @@ and is wrapped around the whole page content, except for the footer in this exam
     <!-- Blog entry -->
     <div class="w3-card-4 w3-margin w3-white">
       <div class="w3-container">
-        <h3><b>Run-AI</b> <img align='right' src="./res/runguy.png" alt="Run Character" style="width:10%"></h3>
-        <h5> Using OpenCV to train a Convolutional Neural Network </h5>
+        <h3><b>Run-AI</b><img align='right' src="./res/runguy.png" alt="Run Character" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">AI, Computer Vision, Machine Learning</span></br> Using OpenCV to train a Convolutional Neural Network </h5>
       </div>
   
       <div class="w3-container">
@@ -79,12 +101,31 @@ and is wrapped around the whole page content, except for the footer in this exam
       </div>
     </div>
 
+
+    <div class="w3-card-4 w3-margin w3-white">
+    <div class="w3-container">
+      <h3><b>Analog Clock Reader</b> <img align='right' src="./res/clock1.jpg" alt="Clock" style="width:12%"></h3>
+      <h5> <span class="w3-opacity">Computer Vision, Problem Solving, Test Automation</span></br>Read time from an Analog Clock</h5>
+    </div>
+    <div class="w3-container">
+      <p>The  purpose of this project is to develop a model for analog clock identification and to
+implement a program that would be able to read a given image and return the time displayed. This is achieved broadly in three steps: find the clock, identify the centre, and highlight hands. This is done using Canny edge detection with Hough transform, and by
+calculating the angles between the hands to return the time in hours, minutes and seconds.”.
+</p>
+<div class="w3-row">
+          <div class="w3-col m8 s12">
+            <form action="https://github.com/msheroubi/AnalogClockReader">
+              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            </form>
+          </div>
+        </div>
+    </div>
+  </div>
+
     <div class="w3-card-4 w3-margin w3-white">
       <div class="w3-container">
-        <h3><b>Honour's Thesis</b> <img align='right' src="./res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
-        <h5> <span class="w3-opacity">September 2019 - April 2020</span></br>Benchmarking performance for Neo4j in a Social
-Media Application
-</h5>
+        <h3><b>Benchmarking graph database performance</b> <img align='right' src="./res/ubc-crest.jpg" alt="UBC-Crest" style="width:10%"></h3>
+        <h5> <span class="w3-opacity">Databases, SQL/NoSQL, Query Optimization</span></br>Honours Thesis</h5>
       </div>
   
       <div class="w3-container">
@@ -101,27 +142,9 @@ Media Application
 
 
   <div class="w3-card-4 w3-margin w3-white">
-        <div class="w3-container">
-      <h3><b>Roubi Analytics</b> <img align='right' src="./res/Roubi-Header.png" alt="Roubi" style="width:20%"></h3>
-      <h5>Data Analytics and Consulting Firm</h5>
-    </div>
-    
-    <div class="w3-container">
-      <p>An consulting firm specializing in data-centric solutions. Focus on database design, implementation, data migration.</p>
-      <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <!-- <form action="roubi.html">
-            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-          </form> -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="w3-card-4 w3-margin w3-white">
     <div class="w3-container">
       <h3><b>Nova-Graph</b> <img align='right' src="./res/graph_Neo-300x173.png" alt="Nova-Graph" style="width:20%"></h3>
-      <h5>Graph Theory and NLP Research</h5>
+      <h5> <span class="w3-opacity">Databases, Graph Theory, Natural Language Processing</span></br>Graph Theory and NLP Research</h5>
     </div>
 
     <div class="w3-container">
@@ -129,32 +152,9 @@ Media Application
       </p>
       <div class="w3-row">
         <div class="w3-col m8 s12">
-            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>TALK TO ME ABOUT THIS!</b></button></p>
+            <p><b>TALK TO ME ABOUT THIS!</b></p>
         </div>
       </div>
-    </div>
-  </div>
-
-    <div class="w3-card-4 w3-margin w3-white">
-    <div class="w3-container">
-      <h3><b>Analog Clock Reader</b> <img align='right' src="./res/clock1.jpg" alt="Clock" style="width:12%"></h3>
-      <h5>Read time from an Analog Clock</h5>
-    </div>
-    <div class="w3-container">
-      <p>The main purpose of this project is to develop a model for analog clock identification and to
-implement a program that would be able to read a given image and return the time displayed
-after its analysis. This is achieved broadly in three steps: find the clock, identify the centre
-and detect and highlight hands using Canny edge detection with Hough transform, and
-calculate the angles between the hands to a given time in hours, minutes and seconds
-respectively. One of the related works similar to this project is “An analog gauge reader”.
-</p>
-<div class="w3-row">
-          <div class="w3-col m8 s12">
-            <form action="https://github.com/msheroubi/AnalogClockReader">
-              <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-            </form>
-          </div>
-        </div>
     </div>
   </div>
 <!-- END BLOG ENTRIES -->
@@ -168,6 +168,7 @@ respectively. One of the related works similar to this project is “An analog g
       <p>
         <b>Contact: </b> </br>
         Email: msheroubi@gmail.com</br>
+        Github: <a href="https://github.com/msheroubi">@msheroubi</a>
       </p>
     </div>
   </div><hr>
@@ -176,60 +177,60 @@ respectively. One of the related works similar to this project is “An analog g
   <!-- About Card -->
   <div class="w3-card w3-margin w3-margin-top">
 
-    <div class="w3-container w3-white">
+    <div class="w3-container w3-white" align="center">
+      <h4><u>Education</u></h4>
       <p>
-        <h6>Education: </h6>
-        <b>University of British Columbia</b></br>
-        <i> BSc. Honours Computer Science </i></br>
+        <b> BSc. Honours Computer Science</b></br>
+        <i>University of British Columbia</i></br>
         Minor in Mathematics </br>
         Specialization in Data Science </br>
         GPA 3.90/4.33<br>
 
-        <h6>Certifications: </h6>
+        <br>
+
         CompTIA Security+</br>
         Google Data Analytics </br>
-        Certified Neo4j Professional </br>
-        </br>
+        Neo4j Certified Professional </br>
 
-        <b>Areas of Expertise:</b> </br>
-        ***** Automation & Scripting</br>
-        *** Database Design</br>
-        *** Data Migration</br>
-        *** Data Analysis</br>
-        ** Image Processing & Computer Vision </br>
-        ** Machine Learning & Neural Networks</br>
+        <h4><u>Skills</u></h4>
+        Automation & Scripting</br>
+        Database Design</br>
+        Data Migration</br>
+        Data Analysis</br>
+        Image Processing</br>
+        Machine Learning & Neural Networks</br>
       </br>
 
-      <b>Areas of Interest:</b> </br>
-        ***** Natural Language Processing</br>
-        ***** Artificial Intelligence <br>
-        *** Graph Theory<br>
-
-      <br>
-        <b>Tool Box: </b></br>
+        <h4><u>Tool Box</u></br></h4>
         <i>Languages:</i></br>
-        ***** Python </br>
-        **** SQL </br>
-        ** R </br>
-        ** Java </br>
+         Python </br>
+         SQL </br>
+        R </br>
+         Java </br>
         <br>
 
         <i>Libraries / Frameworks: </i></br>
-        **** Pandas </br>
-        ** OpenCV </br>
-        ** TensorFlow </br>
-        ** Django </br>
+         Pandas </br>
+         OpenCV </br>
+        TensorFlow </br>
+        Django </br>
         <br>
 
         <i>Other:</i></br>
-        **** Excel </br>
-        *** Github <br>
-        *** VS Code <br>
+         Excel </br>
+         Git <br>
         <br>
 
+      <u>Areas of Interest </u> </br>
+         Natural Language Processing</br>
+         Artificial Intelligence <br>
+         Graph Theory<br>
+
+      <br>
 
 
-        <a href="Testimonials.pdf">Capstone Peer Evaluations<a></br>
+
+        <a href="testimonials.pdf">Capstone Peer Evaluations<a></br>
       </p>
     </div>
   </div><hr>
