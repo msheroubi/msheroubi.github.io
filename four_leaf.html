@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four-Leaf Clover Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        table th {
+            background-color: #f4f4f4;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Four-Leaf Clover Detection</h1>
+        <p><strong>Authors:</strong> Lauren Ramanantsoa, Michael Sheroubi</p>
+        <p><strong>Institution:</strong> École Polytechnique, Paris, France</p>
+        <p><strong>Email:</strong> lauren.ramanantsoa@polytechnique.edu, michael.sheroubi@polytechnique.edu</p>
+    </header>
+
+    <section id="abstract">
+        <h2>Abstract</h2>
+        <p>The project aims to identify and classify clovers in images based on the number of leaves, distinguishing between three-leaf and four-leaf variants. Three approaches are proposed:</p>
+        <ul>
+            <li>A machine learning approach using YOLOv7 and Faster R-CNN algorithms.</li>
+            <li>A Laplacian of Gaussian (LoG) blob detection technique.</li>
+            <li>A flood-fill segmentation method for counting leaves.</li>
+        </ul>
+        <p>Results demonstrate high accuracy in detecting clovers with machine learning models and provide complementary geometric methods for leaf counting.</p>
+    </section>
+
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>The search for four-leaf clovers has long been associated with luck due to their rarity. Automated detection can assist clover hunters by speeding up the process. This project explores machine learning and geometric techniques to detect four-leaf clovers in noisy backgrounds.</p>
+    </section>
+
+    <section id="problem-definition">
+        <h2>Problem Definition</h2>
+        <p>The goal is to detect clovers in natural environments with dense clusters and varying scales. The problem is divided into two challenges:</p>
+        <ol>
+            <li>Isolating individual clovers from noisy environments (detection).</li>
+            <li>Counting the number of leaves on each clover (classification).</li>
+        </ol>
+    </section>
+
+    <section id="cnn-methods">
+        <h2>CNN Clover Detection and Classification</h2>
+
+        <h3>Model Selection</h3>
+        <p>The YOLOv7 model offers speed and efficiency for real-time detection, while Faster R-CNN provides higher precision for complex images but is slower. Both models were fine-tuned on the H4FLC dataset.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Precision (P)</th>
+                    <th>Recall (R)</th>
+                    <th>mAP@0.5</th>
+                    <th>mAP@0.5:.95</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>YOLOv7</td>
+                    <td>0.786</td>
+                    <td>0.779</td>
+                    <td>0.796</td>
+                    <td>0.660</td>
+                </tr>
+                <tr>
+                    <td>Faster R-CNN</td>
+                    <td>0.655</td>
+                    <td>0.5196</td>
+                    <td>0.421</td>
+                    <td>0.655</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Dataset Section -->
+        <h3>Datasets</h3>
+
+        <!-- Dataset Table -->
+      <!-- Remaining Sections-->
+
+      <h3>Datasets</h3>
+      <table>
+          <thead>
+              <tr>
+                  <th>Dataset</th>
+                  <th>Size</th>
+                  <th>Annotations</th>
+                  <th>Total Images</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>FLC Dataset</td>
+                  <td>~67 GB</td>
+                  <td>2151 annotated instances</td>
+                  <td>&gt;100k images</td>
+              </tr>
+              <tr>
+                  <td>GC Dataset</td>
+                  <td>~71 GB</td>
+                  <td>Synthetic annotations (~8000)</td>
+                  <td>~40k images</td>
+              </tr>
+              <tr>
+                  <td>H4FLC Dataset</td>
+                  <td>113 MB</td>
+                  <td>~1200 annotated instances</td>
+                  <td>~1200 images</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <h3>Evaluation of YOLOv7 and Faster R-CNN</h3>
+      <p>Both models were trained on the H4FLC dataset for 50 epochs. YOLOv7 trained 2x faster than Faster R-CNN. YOLOv7 returned more false positives and was more sensitive to overlapping leaves compared to Faster R-CNN.</p>
+      <p>Performance metrics used: precision (P), recall (R), mean Average precision (mAP) at 0.5 Intersection over Union (IoU), and the average for the mean average precision using increments from .5 → .95.</p>
+      <p>Intersection over Union (IoU) is calculated as:</p>
+      <p>IoU = Area of Overlap / Area of Union</p>
+  </section>
+
+  <section id="geometric-classification">
+      <h2>Geometric Classification</h2>
+      <p>We explore two geometric techniques for clover classification: Laplacian of Gaussian (LoG) blob detection and flood fill segmentation.</p>
+
+      <h3>Laplacian of Gaussian Blob Detection</h3>
+      <p>This approach considers each leaf of a clover to be a blob that can be detected by a LoG filter.</p>
+
+      <h4>The LoG filter</h4>
+      <p>The LoG filter is defined as the second derivative (Laplacian) of a Gaussian function. It detects regions with significant changes in intensity such as edges and circular blobs.</p>
+
+      <h4>Automatic Scale Selection</h4>
+      <p>To find the correct σ to detect leaves, we implement automatic scaling. We convolve the image of a clover with a range of σ values and retain the value σ that produces the most extreme response within a 3 by 3 window.</p>
+
+      <h4>Evaluation of the LoG method</h4>
+      <p>The effectiveness of this approach depends on the contrast in the image. It may face challenges with closely spaced leaves or clovers with significant variations.</p>
+
+      <h3>Flood Fill Segmentation</h3>
+      <p>This method works on single clover blobs as opposed to individual leaf blobs.</p>
+
+      <h4>Data Processing</h4>
+      <p>The input needs to be a binary image with a single connected blob representing the clover. Preprocessing steps include grayscale conversion, inversion based on brightness, edge detection, binary thresholding, contour filtering, connected components isolation, and dilation.</p>
+
+      <h4>Flood fill and farthest point algorithms</h4>
+      <p>The flood fill algorithm propagates through the detected clover blob from multiple starting indices. A farthest point algorithm is used to find the starting points.</p>
+
+      <h4>Classification</h4>
+      <p>Classification is based on testing whether using n points yields a clean segmentation. The ratio of each segment relative to the size of the blob is calculated, and if the difference between ratios is above a threshold, the segmentation is deemed uneven and the classification is made.</p>
+
+      <h4>Evaluation of the flood-fill segmentation method</h4>
+      <p>The flood fill algorithm provides relatively consistent results but depends heavily on preprocessing returning a clean binary image.</p>
+  </section>
+
+  <section id="conclusion">
+      <h2>Conclusion and Future Work</h2>
+      <p>The YOLOv7 and Faster R-CNN models have proven highly effective for both detection and classification tasks in noisy backgrounds. They are invariant to scale and orientation and robust to clover variations. With additional training and data combination, real-time classification of 4-leaf clovers is achievable.</p>
+      <p>The LoG Blob Detection method requires further tuning but can be extended to larger clover patch scales. The flood-fill segmentation technique offers a more robust solution to variations in clover types but requires clean binary images for optimal performance.</p>
+      <p>Future work could focus on improving the geometric approaches for real-time performance and enhancing their robustness to various clover types and image qualities.</p>
+  </section>
+
+  <section id="references">
+      <h2>References</h2>
+      <ol>
+          <li>Adam Fonagy. Hunting for four-leaf clovers dataset. https://universe.roboflow.com/adam-fonagy/hunting-for-four-leaf-clovers, nov 2023. visited on 2024-12-15.</li>
+          <li>Hui Kong, Hatice Cinar Akakin, and Sanjay Sarma. A generalized laplacian of gaussian filter for blob detection and its applications. IEEE Transactions on Cybernetics, 43(6):1719–1733, 2013.</li>
+          <li>Gustavo Perez Pablo Arbelaez Laura Bravo, Alejandro Pardo. Finding four-leaf clovers: A benchmark for fine-grained object localization. FGVC6, 2019.</li>
+          <li>T. Lindeberg. Feature detection with automatic scale selection. International Journal of Computer Vision, 30(2):79–116, 1998.</li>
+          <li>Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster r-cnn: Towards real-time object detection with region proposal networks, 2016.</li>
+          <li>Chien-Yao Wang, Alexey Bochkovskiy, and Hong-Yuan Mark Liao. Yolov7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors, 2022.</li>
+      </ol>
+  </section>
+</body>
+</html>
+
