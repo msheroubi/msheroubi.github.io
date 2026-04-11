@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html>
+<title>Active 3D Scene Exploration - Michael Sheroubi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5,h6 { font-family: "Raleway", sans-serif; }
+
+.page-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+  padding: 48px 32px 36px 32px;
+}
+.page-header h1 { color: white; margin: 0 0 8px 0; font-size: 2rem; }
+.page-header .subtitle { color: #a0c4ff; font-size: 1rem; margin: 0 0 16px 0; }
+.page-header .meta { color: #ccc; font-size: 0.9rem; }
+
+.back-link {
+  display: inline-block;
+  color: #a0c4ff;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+.back-link:hover { color: white; }
+
+.section-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  margin: 16px 0;
+  padding: 28px 32px;
+}
+.section-card h2 {
+  color: #0f3460;
+  border-bottom: 2px solid #e8f0fe;
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+.section-card h3 { color: #1a1a2e; margin-top: 24px; }
+.section-card h4 { color: #333; margin-top: 20px; }
+
+.abstract-box {
+  background: #f0f4ff;
+  border-left: 4px solid #0f3460;
+  padding: 20px 24px;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Architecture diagram */
+.arch-diagram {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.arch-box {
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  text-align: center;
+  min-width: 130px;
+}
+.arch-local { background: #dbeafe; border: 2px dashed #3b82f6; }
+.arch-server { background: #fef3c7; border: 2px dashed #f59e0b; }
+.arch-group {
+  border-radius: 10px;
+  padding: 16px;
+}
+.arch-group-local { background: #eff6ff; border: 2px dashed #3b82f6; }
+.arch-group-server { background: #fffbeb; border: 2px dashed #f59e0b; }
+.arch-group-title {
+  font-weight: bold;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.local-title { color: #1d4ed8; }
+.server-title { color: #b45309; }
+.arch-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.arch-arrow {
+  color: #666;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.arch-arrow-label {
+  font-size: 0.7rem;
+  color: #888;
+  text-align: center;
+}
+.arch-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+  color: #555;
+  font-size: 0.8rem;
+}
+.connector-line {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #888 0, #888 5px, transparent 5px, transparent 10px);
+  max-width: 80px;
+}
+
+/* State table colors */
+.state-unknown { background-color: #f3f4f6; }
+.state-free { background-color: #d1fae5; }
+.state-occupied { background-color: #fee2e2; }
+
+/* Code / algorithm blocks */
+.algo-block {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 6px;
+  padding: 20px 24px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.algo-block .algo-title {
+  color: #9cdcfe;
+  font-weight: bold;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 6px;
+}
+.algo-comment { color: #6a9955; }
+.algo-keyword { color: #c586c0; }
+.algo-num { color: #b5cea8; user-select: none; margin-right: 12px; color: #555; }
+
+/* Comparison / info tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.9rem;
+}
+.data-table th {
+  background: #0f3460;
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+}
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.data-table tr:nth-child(even) td { background: #f9fafb; }
+.data-table tr:hover td { background: #f0f4ff; }
+.check { color: #16a34a; font-weight: bold; }
+.cross { color: #dc2626; font-weight: bold; }
+
+/* Policy architecture */
+.policy-arch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 16px 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.policy-block {
+  border-radius: 6px;
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 0.8rem;
+  min-width: 90px;
+}
+.policy-arrow { font-size: 1.4rem; color: #666; flex-shrink: 0; }
+
+/* Key findings boxes */
+.finding-box {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border-radius: 0 4px 4px 0;
+}
+.finding-box.warning {
+  background: #fefce8;
+  border-color: #ca8a04;
+}
+.finding-box.info {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+/* math-like display */
+.math-block {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  text-align: center;
+  margin: 12px 0;
+  color: #1a1a2e;
+}
+
+.toc a {
+  color: #0f3460;
+  text-decoration: none;
+}
+.toc a:hover { text-decoration: underline; }
+.toc li { margin: 4px 0; }
+
+.tag {
+  display: inline-block;
+  background: #0f3460;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin: 2px;
+}
+.tag.green { background: #16a34a; }
+.tag.amber { background: #b45309; }
+.tag.red { background: #dc2626; }
+
+footer.page-footer {
+  background: #1a1a2e;
+  color: #888;
+  text-align: center;
+  padding: 24px;
+  margin-top: 32px;
+  font-size: 0.85rem;
+}
+footer.page-footer a { color: #a0c4ff; text-decoration: none; }
+</style>
+<body class="w3-light-grey">
+
+<div class="w3-content" style="max-width:960px">
+
+  <!-- Header -->
+  <div class="page-header">
+    <a href="index.html" class="back-link">← Back to Portfolio</a>
+    <h1>Active 3D Scene Exploration with a Robotic Arm</h1>
+    <p class="subtitle">Iterative Reconstruction, Occupancy Mapping, and Learned Viewpoint Selection</p>
+    <p class="meta">
+      Michael Sheroubi &nbsp;|&nbsp; March 2026 &nbsp;&nbsp;
+      <span class="tag">Robotics</span>
+      <span class="tag green">Computer Vision</span>
+      <span class="tag amber">Reinforcement Learning</span>
+      <span class="tag">3D Reconstruction</span>
+    </p>
+  </div>
+
+  <!-- Abstract -->
+  <div class="section-card">
+    <h2>Abstract</h2>
+    <p class="abstract-box">
+      A complete pipeline for autonomous 3D scene exploration using a 6-DOF robotic arm equipped
+      with a wrist-mounted camera. The system iteratively captures images, reconstructs the scene
+      using the VGGT foundation model, builds a tri-state occupancy grid via 3D DDA ray-casting,
+      and selects the next-best viewpoint to maximise coverage of unknown regions. A fixed-size
+      occupancy grid ensures consistent voxel resolution across reconstruction rounds. A reinforcement
+      learning approach using PPO with a 3D-CNN policy was also developed, trained entirely in an
+      analytic ray-casting simulator, enabling viewpoint selection without heuristics. The system
+      operates in a split architecture: the robot arm and camera run on a local machine, while
+      GPU-intensive reconstruction runs on a remote server connected via WebSocket.
+    </p>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="section-card">
+    <h2>Contents</h2>
+    <ol class="toc">
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#architecture">System Architecture</a></li>
+      <li><a href="#arm">The SO-101 Robotic Arm</a></li>
+      <li><a href="#reconstruction">3D Reconstruction with VGGT</a></li>
+      <li><a href="#occupancy">Occupancy Grid &amp; DDA Ray-Casting</a></li>
+      <li><a href="#nbv">Next-Best-View Planning</a></li>
+      <li><a href="#rl">Reinforcement Learning for Viewpoint Selection</a></li>
+      <li><a href="#analysis">Critical Analysis: RL vs. Exact Ray-Cast Scoring</a></li>
+      <li><a href="#implementation">Implementation Details</a></li>
+      <li><a href="#results">Results &amp; Observations</a></li>
+      <li><a href="#conclusion">Conclusions &amp; Future Work</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. Introduction -->
+  <div class="section-card" id="introduction">
+    <h2>1. Introduction</h2>
+    <p>
+      Mapping an unknown environment from a fixed-base robotic arm poses a fundamental challenge:
+      the camera can only observe a fraction of the scene from any single viewpoint, and the arm's
+      workspace is constrained by its kinematic limits. The system must therefore decide
+      <em>where to look next</em> to maximise the information gained per movement.
+    </p>
+    <p>This project tackles the <strong>next-best-view (NBV)</strong> problem in a tabletop 3D reconstruction setup:</p>
+    <ul>
+      <li>A <strong>LeRobot SO-101</strong> arm (6-DOF) sits in front of an unknown object or scene.</li>
+      <li>A wrist-mounted USB camera (640×480) captures RGB images.</li>
+      <li><strong>VGGT</strong> (Visual Geometry Grounded Transformer) reconstructs dense 3D geometry from captured views.</li>
+      <li>A <strong>tri-state occupancy grid</strong> tracks which parts of the scene have been observed.</li>
+      <li>A <strong>planner</strong> selects viewpoints that maximise the number of newly observed voxels.</li>
+    </ul>
+    <p>
+      The pipeline runs in a <strong>client–server architecture</strong>: the arm and camera are
+      connected to a local machine, while VGGT runs on a GPU server. Communication uses WebSocket
+      for real-time streaming and REST for reconstruction triggers.
+    </p>
+    <div class="finding-box info">
+      <strong>Why VGGT over Depth Anything V2?</strong> Depth Anything V2 (DA2) produced cleaner,
+      smoother depth maps with fewer artefacts. However, DA2 only estimates monocular depth — it
+      does not predict camera poses or intrinsics. VGGT jointly estimates camera poses, intrinsics,
+      depth, and 3D point maps in a single forward pass, eliminating the need for a separate SfM
+      pipeline like COLMAP.
+    </div>
+  </div>
+
+  <!-- 2. System Architecture -->
+  <div class="section-card" id="architecture">
+    <h2>2. System Architecture</h2>
+
+    <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center; margin:24px 0;">
+
+      <div class="arch-group arch-group-local" style="flex:1; min-width:200px;">
+        <div class="arch-group-title local-title">🖥 Local Machine</div>
+        <div class="arch-flow">
+          <div class="arch-box arch-local">Camera<br><small>640×480 RGB</small></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-local">SO-101 Arm<br><small>6-DOF FK</small></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-local">active_capture.py<br><small>Local controller</small></div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; flex-direction:column; justify-content:center; padding:0 8px;">
+        <div style="font-size:0.75rem; color:#666; margin-bottom:4px;">JPEG + pose</div>
+        <div style="font-size:2rem; color:#888;">⇄</div>
+        <div style="font-size:0.75rem; color:#666; margin-top:4px;">NBV commands</div>
+        <div style="font-size:0.7rem; color:#aaa; margin-top:8px; text-align:center;">WebSocket<br>+ REST</div>
+      </div>
+
+      <div class="arch-group arch-group-server" style="flex:1; min-width:200px;">
+        <div class="arch-group-title server-title">⚡ GPU Server</div>
+        <div class="arch-flow">
+          <div class="arch-box arch-server">server.py<br><small>FastAPI + WebSocket</small></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-server">collector.py<br><small>Session buffer</small></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-server">reconstruction.py<br><small>VGGT-1B</small></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-server">planner.py<br><small>Next-best-view</small></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Local Machine</h3>
+    <p><code>active_capture.py</code> is the local controller which:</p>
+    <ol>
+      <li>Connects to the SO-101 arm via serial (LeRobot SDK).</li>
+      <li>Reads the wrist camera at 640×480.</li>
+      <li>Computes the camera-to-world transform via forward kinematics (FK) for each joint configuration.</li>
+      <li>Encodes each frame as JPEG alongside the 7-DOF pose (x, y, z, q<sub>x</sub>, q<sub>y</sub>, q<sub>z</sub>, q<sub>w</sub>) and streams it over WebSocket.</li>
+      <li>After reconstruction, receives next-best-view suggestions and moves the arm accordingly.</li>
+    </ol>
+
+    <h3>GPU Server</h3>
+    <p>The server (<code>server.py</code>) exposes a FastAPI application managing:</p>
+    <ul>
+      <li><strong>Session management</strong> — Start/stop frame collection, enforcing a minimum baseline between accepted frames.</li>
+      <li><strong>Reconstruction</strong> — Run VGGT on the collected frames, producing point clouds, depth maps, and occupancy grids.</li>
+      <li><strong>Planning</strong> — Compute next-best-view commands from the occupancy grid.</li>
+    </ul>
+  </div>
+
+  <!-- 3. SO-101 Arm -->
+  <div class="section-card" id="arm">
+    <h2>3. The SO-101 Robotic Arm</h2>
+    <p>
+      The LeRobot SO-101 is a low-cost, open-source 6-DOF robotic arm. The camera is
+      <strong>mounted to the left of the gripper</strong> and angled ≈5° to the right so that its
+      optical axis converges with the gripper's pointing direction.
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Joint</th>
+          <th>Name</th>
+          <th>Limits (deg)</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>J₀</td><td>Base rotation</td><td>[−90, +90]</td><td>Azimuthal sweep</td></tr>
+        <tr><td>J₁</td><td>Shoulder</td><td>[−90, 0]</td><td>Elevation control</td></tr>
+        <tr><td>J₂</td><td>Elbow</td><td>[+20, +110]</td><td>Reach / fold</td></tr>
+        <tr><td>J₃</td><td>Wrist pitch</td><td>[−60, +10]</td><td>Tilt fine-tuning</td></tr>
+        <tr><td>J₄</td><td>Wrist roll</td><td>[−90, +90]</td><td>Rotation about optical axis</td></tr>
+        <tr><td>J₅</td><td>Gripper</td><td>[0, +50]</td><td>Fixed at 50° during scanning</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Viewpoint Bank Generation</h3>
+    <p>
+      Rather than using inverse kinematics (unavailable for this arm), a
+      <strong>dense bank of candidate viewpoints</strong> is pre-generated by sampling joint angles
+      using a 5-dimensional <strong>Halton quasi-random sequence</strong> within conservative joint
+      limits. Self-collision-prone configurations are filtered using heuristics (e.g., shoulder +
+      elbow too folded). The default bank contains ~200 viewpoints supplemented by 16 hand-tuned
+      defaults.
+    </p>
+    <div class="finding-box info">
+      The FK function <code>ee_pose(joints)</code> returns a 4×4 camera-to-world matrix that
+      already accounts for the camera's physical offset from the gripper tip.
+    </div>
+  </div>
+
+  <!-- 4. VGGT Reconstruction -->
+  <div class="section-card" id="reconstruction">
+    <h2>4. 3D Reconstruction with VGGT</h2>
+
+    <h3>Model Overview</h3>
+    <p>
+      VGGT (Visual Geometry Grounded Transformer, Facebook Research) is a feed-forward foundation
+      model that takes <em>S</em> RGB images and jointly predicts:
+    </p>
+    <ul>
+      <li><strong>Camera extrinsics</strong> E<sub>i</sub> ∈ ℝ<sup>3×4</sup> — rotation + translation</li>
+      <li><strong>Camera intrinsics</strong> K<sub>i</sub> ∈ ℝ<sup>3×3</sup> — focal lengths, principal point</li>
+      <li><strong>Depth maps</strong> D<sub>i</sub> ∈ ℝ<sup>H×W</sup> with per-pixel confidence</li>
+      <li><strong>World-space point maps</strong> P<sub>i</sub> ∈ ℝ<sup>H×W×3</sup> with per-pixel confidence</li>
+    </ul>
+    <p>
+      Images are resized to width 518 (VGGT's expected input), with height adjusted to the nearest
+      multiple of 14 (vision transformer patch size). For 640×480 input, the effective resolution
+      is 518×392.
+    </p>
+
+    <h3>Point Cloud Fusion</h3>
+    <p>After VGGT's forward pass, per-view point maps are fused into a single point cloud by:</p>
+    <ol>
+      <li>Filtering pixels with confidence below a threshold (default 0.3).</li>
+      <li>Concatenating all surviving 3D points across views.</li>
+      <li>Associating each point with its RGB colour from the input image.</li>
+    </ol>
+
+    <div class="finding-box warning">
+      <strong>VGGT vs. Depth Anything V2:</strong> DA2 produced cleaner depth maps, but requires
+      a separate SfM pipeline for pose estimation. VGGT's joint prediction takes only 3–10 seconds
+      for 10–50 frames, making it better suited for the iterative exploration loop where latency
+      matters.
+    </div>
+  </div>
+
+  <!-- 5. Occupancy Grid -->
+  <div class="section-card" id="occupancy">
+    <h2>5. Occupancy Grid</h2>
+    <p>
+      The occupancy grid is a regular 3D voxel grid of resolution G³ (default G=64, yielding
+      262,144 voxels). Each voxel has one of three states:
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Value</th><th>State</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="state-unknown">
+          <td><strong>0</strong></td>
+          <td>UNKNOWN</td>
+          <td>Never observed by any camera ray.</td>
+        </tr>
+        <tr class="state-free">
+          <td><strong>1</strong></td>
+          <td>FREE</td>
+          <td>At least one ray passed through without hitting a surface — confirmed empty.</td>
+        </tr>
+        <tr class="state-occupied">
+          <td><strong>2</strong></td>
+          <td>OCCUPIED</td>
+          <td>A ray terminated here — surface point detected.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The <strong>exploration fraction</strong> is defined as:</p>
+    <div class="math-block">
+      f_explored = ( |{FREE}| + |{OCCUPIED}| ) / G³
+    </div>
+    <p>The exploration loop terminates when <strong>f_explored ≥ 0.90</strong>.</p>
+
+    <h3>3D DDA Ray-Casting (Amanatides &amp; Woo)</h3>
+    <p>
+      Each voxel's state is determined by ray-casting from camera origins through the voxel grid
+      to observed surface points. The 3D Digital Differential Analyser (DDA) algorithm efficiently
+      traverses voxels along a ray by tracking the parametric distances to the next axis-aligned
+      voxel boundaries.
+    </p>
+
+    <div class="algo-block">
+      <div class="algo-title">Algorithm: 3D DDA Ray Traversal</div>
+      <div><span class="algo-num">1</span><span class="algo-keyword">Input:</span> Camera origin <strong>o</strong>, surface endpoint <strong>e</strong>, grid origin, voxel size, grid G³</div>
+      <div><span class="algo-num">2</span><span class="algo-keyword">d</span> ← normalise(<strong>e</strong> − <strong>o</strong>)</div>
+      <div><span class="algo-num">3</span>(i_x, i_y, i_z) ← ⌊<strong>o</strong> / voxel_size⌋  <span class="algo-comment">// Starting voxel</span></div>
+      <div><span class="algo-num">4</span>(e_x, e_y, e_z) ← ⌊<strong>e</strong> / voxel_size⌋  <span class="algo-comment">// Endpoint voxel</span></div>
+      <div><span class="algo-num">5</span>Compute step_xyz, t_max_xyz, Δt_xyz for each axis</div>
+      <div><span class="algo-num">6</span><span class="algo-keyword">while</span> voxel is inside grid:</div>
+      <div><span class="algo-num">7</span>&nbsp;&nbsp;&nbsp;<span class="algo-keyword">if</span> (i_x, i_y, i_z) == (e_x, e_y, e_z):</div>
+      <div><span class="algo-num">8</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grid[i_x, i_y, i_z] ← <span style="color:#ce9178;">OCCUPIED</span></div>
+      <div><span class="algo-num">9</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="algo-keyword">break</span></div>
+      <div><span class="algo-num">10</span>&nbsp;&nbsp;<span class="algo-keyword">else</span>:</div>
+      <div><span class="algo-num">11</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="algo-keyword">if</span> grid[i_x, i_y, i_z] ≠ <span style="color:#ce9178;">OCCUPIED</span>:</div>
+      <div><span class="algo-num">12</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grid[i_x, i_y, i_z] ← <span style="color:#9cdcfe;">FREE</span></div>
+      <div><span class="algo-num">13</span>&nbsp;&nbsp;&nbsp;Advance to next voxel along smallest t_max axis</div>
+    </div>
+
+    <p>
+      For each reconstructed view, rays are cast at every 4th pixel (<code>ray_stride=4</code>),
+      resulting in ~12,740 rays per view (130×98). Crucially, existing OCCUPIED markings are never
+      overwritten by FREE, preserving previously detected surfaces.
+    </p>
+    <div class="finding-box">
+      The DDA implementation includes an optional <strong>Numba JIT-compiled</strong> path that
+      parallelises ray-casting across all rays, providing a ~25× speedup over the pure-Python fallback.
+    </div>
+
+    <h3>Fixed-Size Occupancy Grid</h3>
+    <p>The initial implementation used a dynamic bounding box computed from the point cloud extent, which caused three critical problems:</p>
+    <ol>
+      <li><strong>Voxel size changed between rounds</strong> — a voxel marked FREE in round k might correspond to a different physical region in round k+1.</li>
+      <li><strong>Exploration fraction became meaningless</strong> — f_explored could <em>decrease</em> as new points expanded the bounding box, making the stopping criterion unreachable.</li>
+      <li><strong>Planner instability</strong> — frontier locations jumped around, leading to oscillating viewpoint suggestions.</li>
+    </ol>
+    <p>
+      <strong>Solution:</strong> The grid's bounding box is fixed at the start of exploration using
+      the camera's FK from a known reference pose. The scene centre is placed 25 cm in front of the
+      camera along its optical axis:
+    </p>
+    <div class="math-block">
+      c_scene = p_cam + 0.25 · d̂_cam<br>
+      o_grid = c_scene − h · 1<br>
+      v_size = 2h / G
+    </div>
+
+    <h3>Hemisphere Masking</h3>
+    <p>
+      Because the arm sits on one side of the scene, the rear half of the bounding cube can never
+      be observed. Voxels <em>behind</em> the scene centre are pre-marked as FREE, preventing the
+      planner from targeting unreachable regions and accelerating convergence of f_explored.
+    </p>
+  </div>
+
+  <!-- 6. NBV Planning -->
+  <div class="section-card" id="nbv">
+    <h2>6. Next-Best-View Planning</h2>
+
+    <h3>Heuristic Planner</h3>
+    <p>The baseline planner operates in two stages:</p>
+
+    <h4>Stage 1 — Frontier Detection</h4>
+    <p>
+      Frontier voxels are UNKNOWN voxels with at least one 6-connected FREE neighbour. They
+      represent the boundary of explored space — the most promising targets for new observations.
+      Frontier centroids are clustered using non-maximum suppression with a radius of 2 voxels.
+    </p>
+
+    <h4>Stage 2 — Information-Gain Scoring</h4>
+    <p>For each unvisited viewpoint candidate, an <strong>information-gain score</strong> counts UNKNOWN voxels within a frustum cone defined by:</p>
+    <ul>
+      <li>Half-angle: 0.52 rad (~30°, matching the camera's ~60° horizontal FOV)</li>
+      <li>Maximum range: 0.5 m</li>
+    </ul>
+    <p>
+      Viewpoints closer to the scene centre receive a proximity bonus. The top-k candidates are
+      then reordered via a <strong>nearest-neighbour TSP heuristic</strong> in joint space to
+      minimise arm travel.
+    </p>
+
+    <h3>Exploration Loop</h3>
+    <div class="algo-block">
+      <div class="algo-title">Algorithm: Automatic NBV Exploration Loop</div>
+      <div><span class="algo-num">1</span>Initialise scene bounds from reference pose</div>
+      <div><span class="algo-num">2</span>Generate viewpoint bank 𝒱  (Halton sampling, |𝒱| ≈ 200)</div>
+      <div><span class="algo-num">3</span>Pre-compute FK positions and directions for all candidates</div>
+      <div><span class="algo-num">4</span>𝒷₀ ← seed views (first 3–5 from defaults)</div>
+      <div><span class="algo-num">5</span><span class="algo-keyword">for</span> round k = 1, 2, …:</div>
+      <div><span class="algo-num">6</span>&nbsp;&nbsp;&nbsp;Move arm to each v ∈ 𝒷_k, capture and stream frames</div>
+      <div><span class="algo-num">7</span>&nbsp;&nbsp;&nbsp;Trigger VGGT reconstruction (merging all sessions)</div>
+      <div><span class="algo-num">8</span>&nbsp;&nbsp;&nbsp;Fetch occupancy grid and exploration fraction</div>
+      <div><span class="algo-num">9</span>&nbsp;&nbsp;&nbsp;<span class="algo-keyword">if</span> f_explored ≥ 0.90: <span class="algo-keyword">stop</span>  <span class="algo-comment">// Scene sufficiently mapped</span></div>
+      <div><span class="algo-num">10</span>&nbsp;&nbsp;Score unvisited candidates by information gain + NBV matching</div>
+      <div><span class="algo-num">11</span>&nbsp;&nbsp;𝒷_{k+1} ← top-k candidates, TSP-reordered</div>
+    </div>
+  </div>
+
+  <!-- 7. RL -->
+  <div class="section-card" id="rl">
+    <h2>7. Reinforcement Learning for Viewpoint Selection</h2>
+    <p>
+      While the heuristic planner works well in practice, it does not account for occlusion, uses
+      a simplified cone frustum, and greedily maximises single-step gain. An alternative
+      <strong>RL-based viewpoint selection</strong> approach was also developed.
+    </p>
+
+    <h3>Problem Formulation (MDP)</h3>
+    <table class="data-table">
+      <thead><tr><th>Component</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>State</strong></td>
+          <td>Downsampled occupancy grid (16³), current camera position and direction, exploration fraction</td>
+        </tr>
+        <tr>
+          <td><strong>Action</strong></td>
+          <td>4-dimensional continuous vector (x, y, z, roll) ∈ [−1, 1]⁴, mapped to the nearest viewpoint bank candidate</td>
+        </tr>
+        <tr>
+          <td><strong>Reward</strong></td>
+          <td>r_t = f_explored(t) − f_explored(t−1) — the fraction of newly explored voxels</td>
+        </tr>
+        <tr>
+          <td><strong>Terminal</strong></td>
+          <td>f_explored ≥ 0.95 or step limit reached (default 20)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Policy Architecture (3D-CNN Actor-Critic)</h3>
+
+    <div style="overflow-x:auto; margin:16px 0;">
+      <div class="policy-arch">
+        <div class="policy-block" style="background:#e5e7eb;">Occupancy Grid<br><small>16³</small></div>
+        <span class="policy-arrow">→</span>
+        <div class="policy-block" style="background:#dbeafe;">Conv3D<br><small>1→16</small></div>
+        <span class="policy-arrow">→</span>
+        <div class="policy-block" style="background:#dbeafe;">Conv3D<br><small>16→32</small></div>
+        <span class="policy-arrow">→</span>
+        <div class="policy-block" style="background:#dbeafe;">Conv3D<br><small>32→64</small></div>
+        <span class="policy-arrow">→</span>
+        <div class="policy-block" style="background:#fef9c3;">AvgPool<br><small>→64</small></div>
+        <span class="policy-arrow">→</span>
+        <div class="policy-block" style="background:#dcfce7;">MLP<br><small>128-dim</small><br><small>+ pos, dir,<br>f_explored</small></div>
+        <span class="policy-arrow">→</span>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="policy-block" style="background:#fee2e2;">Actor<br><small>μ, log σ</small></div>
+          <div class="policy-block" style="background:#f3e8ff;">Critic<br><small>V(s)</small></div>
+        </div>
+      </div>
+    </div>
+
+    <ul>
+      <li><strong>Encoder</strong> — Three Conv3D layers (1→16→32→64 channels) with BatchNorm, ReLU, and max-pooling, followed by adaptive average pooling to a 64-dim vector.</li>
+      <li><strong>Trunk</strong> — Concatenation with camera position (3), camera direction (3), and explored fraction (1), followed by a linear layer to 128 dimensions.</li>
+      <li><strong>Actor head</strong> — Outputs a 4-dim mean μ (tanh-squashed) and a learned log σ parameter for a diagonal Gaussian policy.</li>
+      <li><strong>Critic head</strong> — Outputs a scalar state value V(s).</li>
+    </ul>
+    <p><em>Total parameters: ~96,000.</em></p>
+
+    <h3>PPO Training</h3>
+    <ul>
+      <li>Generalised Advantage Estimation (GAE, γ=0.99, λ=0.95)</li>
+      <li>Clipped surrogate objective (ε = 0.2)</li>
+      <li>Entropy bonus (β = 0.01–0.02) to encourage exploration</li>
+      <li>Adam optimiser, learning rate 3×10⁻⁴</li>
+      <li>512 environment steps per epoch, 4 PPO mini-batch passes</li>
+    </ul>
+
+    <h3>Analytic Visibility Simulator</h3>
+    <p>
+      To train the RL policy without requiring the physical arm, a <strong>fully analytic
+      simulator</strong> was built that generates random scenes and simulates camera observations:
+    </p>
+    <ul>
+      <li><strong>Scene generation</strong> — Each episode generates 3–8 random primitive objects (boxes, spheres, cylinders) within the inner 60% of the voxel volume, plus a floor plane in the bottom voxel layers.</li>
+      <li><strong>Ray-casting with occlusion</strong> — The same 3D DDA algorithm is used, but rays are cast to max_range and checked against the ground-truth grid. Objects block the camera's view of regions behind them, forcing the policy to learn multi-view strategies.</li>
+      <li><strong>Performance</strong> — With Numba JIT compilation, the simulator processes ~12,740 rays per observation in &lt;5 ms, enabling ~0.5 s per training epoch (512 steps) on a single GPU node.</li>
+    </ul>
+
+    <table class="data-table">
+      <thead><tr><th>Parameter</th><th>Real Camera</th><th>Simulator</th></tr></thead>
+      <tbody>
+        <tr><td>Horizontal FOV</td><td>~60°</td><td>60°</td></tr>
+        <tr><td>Vertical FOV</td><td>~47°</td><td>47°</td></tr>
+        <tr><td>Ray grid</td><td>130×98 (stride-4)</td><td>130×98</td></tr>
+        <tr><td>Max range</td><td>0.5 m</td><td>0.5 m</td></tr>
+        <tr><td>Camera offset</td><td>Left of gripper, 5° right yaw</td><td>Modelled</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. Critical Analysis -->
+  <div class="section-card" id="analysis">
+    <h2>8. Critical Analysis: RL vs. Exact Ray-Cast Scoring</h2>
+    <p>A central question of this project: <em>is reinforcement learning the right tool for viewpoint selection in this setting?</em></p>
+
+    <h3>What RL Theoretically Adds</h3>
+    <ol>
+      <li><strong>Occlusion awareness</strong> — The cone test counts all UNKNOWN voxels in the frustum regardless of whether they are occluded by intervening OCCUPIED voxels. A learned policy observing the full occupancy grid could implicitly account for occlusion.</li>
+      <li><strong>Multi-step planning</strong> — RL optimises discounted cumulative reward, so it could learn strategies like "move to a less informative viewpoint now because it enables a highly informative one next."</li>
+      <li><strong>Learned shape priors</strong> — If trained on realistic scenes, the policy could learn that objects have backsides, concavities require specific viewing angles, etc.</li>
+    </ol>
+
+    <h3>Why These Advantages Don't Materialise</h3>
+    <div class="finding-box warning">
+      <strong>Occlusion can be computed exactly.</strong> Rather than <em>learning</em> occlusion awareness, we can <em>compute</em> it directly using the same 3D DDA algorithm — yielding an exact, occlusion-aware score with no training, no approximation error, and zero sim-to-real gap.
+    </div>
+    <div class="finding-box warning">
+      <strong>Multi-step lookahead is intractable.</strong> With ~200 candidate viewpoints and a horizon of 20 steps, the decision tree has 200²⁰ branches. PPO with ~96,000 parameters and ~50,000 training steps explores a negligible fraction. In practice, the learned policy converges to a greedy strategy — the very function we can compute analytically.
+    </div>
+    <div class="finding-box warning">
+      <strong>Random primitives offer no learnable prior.</strong> Each training episode generates a new random scene. There is no consistent geometric prior for the policy to exploit. The optimal strategy in every episode reduces to: <em>look where the most UNKNOWN voxels are visible</em> — which is exactly what the exact scorer computes.
+    </div>
+
+    <h3>The Exact Ray-Cast Scorer</h3>
+    <p>An improved heuristic replaces the simplified cone test with exact DDA ray-casting against the live occupancy grid. For each candidate viewpoint:</p>
+    <ol>
+      <li>Generate a grid of 130×98 ray directions matching the real camera's 60°×47° FOV.</li>
+      <li>For each ray, walk the DDA through the current occupancy grid to max_range.</li>
+      <li>If the ray hits an OCCUPIED voxel, <strong>stop</strong> (occlusion modelled).</li>
+      <li>Count the UNKNOWN voxels traversed before stopping.</li>
+      <li>Accumulate across all rays to obtain the score.</li>
+    </ol>
+    <div class="finding-box">
+      With Numba JIT, scoring all ~200 candidates takes &lt;1 s on a single CPU core (~2.5M rays, each traversing ~50 voxels on average).
+    </div>
+
+    <h3>Comparative Summary</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Cone Heuristic</th>
+          <th>RL (PPO)</th>
+          <th>Exact Ray-Cast</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Occlusion-aware</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span> (approx.)</td>
+          <td><span class="check">✓</span> (exact)</td>
+        </tr>
+        <tr>
+          <td>Multi-step planning</td>
+          <td><span class="cross">✗</span></td>
+          <td>Theoretically <span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>Training required</td>
+          <td>None</td>
+          <td>~500 episodes</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Sim-to-real gap</td>
+          <td>None</td>
+          <td>Moderate</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Eval. time (200 candidates)</td>
+          <td>&lt;10 ms</td>
+          <td>&lt;5 ms</td>
+          <td>&lt;1 s</td>
+        </tr>
+        <tr>
+          <td>Implementation complexity</td>
+          <td>Low</td>
+          <td>High</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Deterministic</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>When Would RL Be the Right Choice?</h3>
+    <p>Despite its limitations in this setting, RL is well-motivated when:</p>
+    <ol>
+      <li><strong>No explicit occupancy grid</strong> — If the reconstruction model outputs only point clouds or implicit representations (e.g., NeRFs), an RL policy operating on raw images or latent features can still learn to explore.</li>
+      <li><strong>Continuous action spaces with IK</strong> — If inverse kinematics is available, the policy can output smooth end-effector trajectories enabling finer-grained viewpoint control.</li>
+      <li><strong>Task-driven exploration</strong> — If the objective is semantic (e.g., "find the red cup," "inspect the weld seam"), reward encodes task-specific success criteria that voxel counting cannot capture.</li>
+      <li><strong>Large-scale learned priors</strong> — Trained on thousands of realistic scenes, the policy can amortise planning across the scene distribution, making decisions in constant time regardless of grid resolution.</li>
+      <li><strong>Dynamic environments</strong> — If objects move during exploration, the policy can learn anticipatory strategies that a myopic scorer cannot.</li>
+    </ol>
+
+    <div class="finding-box">
+      <strong>Takeaway:</strong> For this specific problem — maximising voxel coverage with a known occupancy grid, a discrete viewpoint bank, and FK-only kinematics — the exact ray-cast scorer is strictly superior. The RL pipeline remains valuable as a research contribution, establishing the infrastructure (environment, simulator, policy architecture) needed for future extensions to task-driven or continuous-action settings.
+    </div>
+  </div>
+
+  <!-- 9. Implementation -->
+  <div class="section-card" id="implementation">
+    <h2>9. Implementation Details</h2>
+
+    <h3>Module Overview</h3>
+    <table class="data-table">
+      <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><code>server.py</code></td><td>FastAPI server: REST + WebSocket endpoints, session management, reconstruction dispatch.</td></tr>
+        <tr><td><code>reconstruction.py</code></td><td>VGGT wrapper: image preparation, forward pass, point cloud fusion, uncertainty voxelisation, occupancy grid via DDA ray-casting.</td></tr>
+        <tr><td><code>active_capture.py</code></td><td>Local controller: arm interface, FK, viewpoint bank generation, information-gain scoring, auto-exploration loop.</td></tr>
+        <tr><td><code>planner.py</code></td><td>Server-side NBV: frontier detection, uncertainty clustering, viewpoint proposals.</td></tr>
+        <tr><td><code>collector.py</code></td><td>Frame + pose buffering with baseline filtering.</td></tr>
+        <tr><td><code>rl_viewpoint/env.py</code></td><td>Gymnasium environments (cached, live, simulated).</td></tr>
+        <tr><td><code>rl_viewpoint/policy.py</code></td><td>3D-CNN actor-critic network.</td></tr>
+        <tr><td><code>rl_viewpoint/train.py</code></td><td>PPO training loop with GAE.</td></tr>
+        <tr><td><code>rl_viewpoint/simulator.py</code></td><td>Analytic scene generator + DDA visibility simulator.</td></tr>
+        <tr><td><code>rl_viewpoint/utils.py</code></td><td>Occupancy downsampling, FK bank utilities.</td></tr>
+        <tr><td><code>rl_viewpoint/infer.py</code></td><td>Deploy trained policy on real arm.</td></tr>
+        <tr><td><code>rl_viewpoint/collect.py</code></td><td>Collect real transitions for fine-tuning.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Communication Protocol</h3>
+    <p>The WebSocket wire protocol sends binary messages from client to server:</p>
+    <div class="algo-block" style="text-align:center;">
+      [28 bytes: pose (7×float32 LE)] [variable: JPEG bytes]
+    </div>
+    <p>The server responds with JSON containing real-time analytics (brightness, confidence) and collection status.</p>
+
+    <h3>Key Design Decisions</h3>
+    <ol>
+      <li>
+        <strong>No inverse kinematics.</strong> The SO-101 SDK provides FK but not IK. All viewpoint
+        selection operates in <em>joint space</em>: a bank of FK-validated candidates is pre-computed,
+        and both heuristic and RL planners select from this discrete bank.
+      </li>
+      <li>
+        <strong>Session merging.</strong> Each exploration round starts a new collection session,
+        but reconstruction merges all historical sessions, ensuring the occupancy grid improves
+        cumulatively.
+      </li>
+      <li>
+        <strong>Occupancy downsampling.</strong> For the RL policy, the 64³ grid is downsampled to
+        16³ using a priority-based pooling rule — within each 4³ block,
+        OCCUPIED &gt; FREE &gt; UNKNOWN — preserving structural information while fitting in the
+        CNN's receptive field.
+      </li>
+    </ol>
+  </div>
+
+  <!-- 10. Results -->
+  <div class="section-card" id="results">
+    <h2>10. Results &amp; Observations</h2>
+
+    <h3>Heuristic Exploration (Physical Arm)</h3>
+    <ul>
+      <li>The system reaches <strong>~70% explored fraction</strong> within 3–4 rounds (15–20 viewpoints).</li>
+      <li>Hemisphere masking and fixed grid ensure <strong>monotonic increase</strong> in f_explored.</li>
+      <li>TSP joint-space reordering reduces arm travel by <strong>~30%</strong> compared to naïve ordering.</li>
+    </ul>
+
+    <h3>RL Training (Simulation)</h3>
+    <p>Training the PPO policy in the analytic simulator for 100 epochs (51,200 environment steps, ~5 minutes):</p>
+    <ul>
+      <li>Average episode reward improves from <strong>0.30 to 0.35</strong> (each episode = 10 viewpoints on a new random scene).</li>
+      <li>The policy learns to prefer viewpoints that face large unexplored regions and to avoid redundant views of already-observed areas.</li>
+      <li>The floor plane in the simulator prevents the policy from learning to look through the table.</li>
+    </ul>
+  </div>
+
+  <!-- 11. Conclusion -->
+  <div class="section-card" id="conclusion">
+    <h2>11. Conclusions &amp; Future Work</h2>
+    <p>
+      This project presents a complete pipeline for active 3D scene exploration combining a robotic
+      arm, feed-forward 3D reconstruction (VGGT), and intelligent viewpoint selection. The
+      fixed-size occupancy grid and hemisphere masking resolved critical issues with dynamic
+      bounding boxes. The analytic visibility simulator provides a fast, geometry-accurate training
+      environment for RL-based planning.
+    </p>
+
+    <h3>Future Directions</h3>
+    <ul>
+      <li>
+        <strong>Sim-to-real transfer</strong> — Fine-tune the RL policy on real-world transitions
+        collected from the arm to close the simulation gap (VGGT noise, calibration error).
+      </li>
+      <li>
+        <strong>Multi-object scenes</strong> — Extend the simulator to include more complex shapes
+        and materials.
+      </li>
+      <li>
+        <strong>Continuous action space</strong> — Replace the discrete viewpoint bank matching
+        with direct Cartesian control (requires IK or learned motor primitives).
+      </li>
+      <li>
+        <strong>Depth model fusion</strong> — Combine VGGT's pose predictions with DA2's cleaner
+        depth maps for higher-quality reconstruction.
+      </li>
+    </ul>
+  </div>
+
+</div><!-- end w3-content -->
+
+<footer class="page-footer">
+  <a href="index.html">← Michael Sheroubi's Portfolio</a> &nbsp;|&nbsp; March 2026
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<title>EMOTE: Visual Shader for Socio-Emotional Agents - Michael Sheroubi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5,h6 { font-family: "Raleway", sans-serif; }
+
+.page-header {
+  background: linear-gradient(135deg, #1a0533 0%, #3d1166 50%, #7c3aed 100%);
+  color: white;
+  padding: 48px 32px 36px 32px;
+}
+.page-header h1 { color: white; margin: 0 0 8px 0; font-size: 2rem; }
+.page-header .subtitle { color: #ddd6fe; font-size: 1rem; margin: 0 0 16px 0; }
+.page-header .meta { color: #ccc; font-size: 0.9rem; }
+
+.back-link {
+  display: inline-block;
+  color: #ddd6fe;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+.back-link:hover { color: white; }
+
+.section-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  margin: 16px 0;
+  padding: 28px 32px;
+}
+.section-card h2 {
+  color: #5b21b6;
+  border-bottom: 2px solid #ede9fe;
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+.section-card h3 { color: #1a1a2e; margin-top: 24px; }
+.section-card h4 { color: #333; margin-top: 20px; }
+
+.abstract-box {
+  background: #f5f3ff;
+  border-left: 4px solid #7c3aed;
+  padding: 20px 24px;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  margin: 0;
+}
+
+.finding-box {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border-radius: 0 4px 4px 0;
+}
+.finding-box.warning {
+  background: #fefce8;
+  border-color: #ca8a04;
+}
+.finding-box.info {
+  background: #f5f3ff;
+  border-color: #7c3aed;
+}
+.finding-box.danger {
+  background: #fff1f2;
+  border-color: #e11d48;
+}
+
+.math-block {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 14px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  margin: 12px 0;
+  color: #1a1a2e;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.9rem;
+}
+.data-table th {
+  background: #5b21b6;
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+}
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.data-table tr:nth-child(even) td { background: #faf5ff; }
+.data-table tr:hover td { background: #f5f3ff; }
+
+.tag {
+  display: inline-block;
+  background: #7c3aed;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin: 2px;
+}
+.tag.green { background: #16a34a; }
+.tag.amber { background: #b45309; }
+.tag.pink { background: #db2777; }
+
+.toc a { color: #5b21b6; text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.toc li { margin: 4px 0; }
+
+/* Emotion palette swatches */
+.emotion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.emotion-card {
+  border-radius: 10px;
+  padding: 14px 12px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.emotion-joy     { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #1a1a2e; text-shadow: none; }
+.emotion-anger   { background: linear-gradient(135deg, #dc2626, #f97316); }
+.emotion-sadness { background: linear-gradient(135deg, #1d4ed8, #64748b); }
+.emotion-fear    { background: linear-gradient(135deg, #111827, #4b5563); }
+.emotion-surprise{ background: linear-gradient(135deg, #e5e7eb, #f9fafb); color: #111; text-shadow: none; }
+.emotion-love    { background: linear-gradient(135deg, #db2777, #a855f7); }
+
+.emotion-label { font-size: 0.95rem; margin-bottom: 4px; }
+.emotion-detail { font-size: 0.72rem; opacity: 0.9; font-weight: normal; margin-top: 6px; }
+
+/* Architecture loops */
+.loop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.loop-card {
+  border-radius: 8px;
+  padding: 16px 18px;
+  font-size: 0.85rem;
+}
+.loop-input   { background: #eff6ff; border-left: 4px solid #3b82f6; }
+.loop-cog     { background: #fefce8; border-left: 4px solid #ca8a04; }
+.loop-output  { background: #f0fdf4; border-left: 4px solid #16a34a; }
+.loop-title   { font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
+
+/* User study bar chart */
+.bar-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 0.85rem; }
+.bar-label { min-width: 200px; }
+.bar-track { flex: 1; background: #e5e7eb; border-radius: 4px; height: 22px; }
+.bar-fill  { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.78rem; font-weight: bold; color: white; }
+
+/* Blob visual (pure CSS) */
+.blob-demo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.blob-svg-wrap {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #555;
+}
+.blob-svg-wrap span { display: block; margin-top: 8px; }
+
+footer.page-footer {
+  background: #1a0533;
+  color: #888;
+  text-align: center;
+  padding: 24px;
+  margin-top: 32px;
+  font-size: 0.85rem;
+}
+footer.page-footer a { color: #ddd6fe; text-decoration: none; }
+
+cite { font-style: normal; color: #7c3aed; font-size: 0.85rem; }
+
+.ref-list { font-size: 0.82rem; color: #444; line-height: 1.8; }
+.ref-list li { margin-bottom: 6px; }
+.ref-list a { color: #7c3aed; }
+</style>
+<body class="w3-light-grey">
+
+<div class="w3-content" style="max-width:960px">
+
+  <!-- Header -->
+  <div class="page-header">
+    <a href="index.html" class="back-link">← Back to Portfolio</a>
+    <h1>EMOTE</h1>
+    <p class="subtitle">Visual Shader for Non-Anthropomorphic Socio-Emotional Embodied Agents</p>
+    <p class="meta">
+      Michael Sheroubi &nbsp;|&nbsp; February 2026 &nbsp;&nbsp;
+      <span class="tag">HCI</span>
+      <span class="tag pink">Affective Computing</span>
+      <span class="tag green">NLP</span>
+      <span class="tag amber">Unity / Real-Time</span>
+    </p>
+  </div>
+
+  <!-- Abstract / Motivation -->
+  <div class="section-card">
+    <h2>Overview</h2>
+    <p class="abstract-box">
+      EMOTE is a procedurally generated visual shader that communicates the emotional state of a
+      conversational AI agent through shape, motion, and color — without using a face. Grounded in
+      perceptual psychology research on shape–emotion and color–emotion associations, the blob
+      representation allows users to interpret affect while maintaining a clear boundary between AI
+      and human interaction. The system runs end-to-end locally: Whisper for speech recognition,
+      Gemma 3 (1B) via Ollama for language generation, a fine-tuned DistilBERT for emotion
+      classification, and Piper for text-to-speech, all orchestrated by Unity.
+    </p>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="section-card">
+    <h2>Contents</h2>
+    <ol class="toc">
+      <li><a href="#introduction">Introduction &amp; Motivation</a></li>
+      <li><a href="#theory">Theoretical Foundation</a></li>
+      <li><a href="#blob">The Blob — Mathematical Model</a></li>
+      <li><a href="#architecture">System Architecture</a></li>
+      <li><a href="#emotions">Emotion Parameterization</a></li>
+      <li><a href="#user-study">User Study</a></li>
+      <li><a href="#conclusion">Conclusion &amp; Future Work</a></li>
+      <li><a href="#references">References</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. Introduction -->
+  <div class="section-card" id="introduction">
+    <h2>1. Introduction &amp; Motivation</h2>
+    <p>
+      Human beings have the tendency to form emotional attachments to non-emotional beings. As the use
+      of LLM agents becomes increasingly integrated into everyday life, researchers face an important
+      question: how should socio-emotional interactions with embodied agents be modelled?
+    </p>
+    <p>
+      While it might be tempting to give these agents realistic faces, the interaction remains
+      unsettling until we exit the uncanny valley — and a fully realistic face unlocks a new set of
+      risks if people unknowingly interact with AI models. We chose to explore how emotional
+      communication can be integrated into conversational AI <em>without</em> relying on
+      anthropomorphic realism.
+    </p>
+    <div class="finding-box danger">
+      <strong>The Uncanny Valley Problem (Mori, 1970):</strong> Near-human representations evoke
+      discomfort rather than empathy. Fully realistic faces blur the distinction between human and
+      artificial agents, raising concerns about transparency and emotional manipulation.
+    </div>
+    <p>
+      We intentionally designed a visualization that is expressive yet unmistakably artificial.
+      The blob communicates emotional state through motion, color, and shape — allowing users to
+      interpret affect without attributing human identity to the system. This is particularly
+      relevant for applications involving children, education, or emotional-support interfaces,
+      where emotional clarity and transparency are essential.
+    </p>
+    <div class="finding-box info">
+      <strong>Context:</strong> Major AI labs (OpenAI, Google, Perplexity) have independently
+      arrived at blob-like visualizations for their voice interaction UIs — suggesting convergent
+      design intuition toward non-anthropomorphic affective displays.
+    </div>
+  </div>
+
+  <!-- 2. Theory -->
+  <div class="section-card" id="theory">
+    <h2>2. Theoretical Foundation</h2>
+
+    <h3>Shape Selection: Kiki and Bouba</h3>
+    <p>
+      A growing body of perceptual psychology suggests that humans do not interpret shape as
+      emotionally neutral. <strong>Vainio et al. (2025)</strong> study the association between
+      emotions, shapes, and sounds through both explicit judgments and implicit association
+      measures, reporting a robust mapping:
+    </p>
+    <ul>
+      <li><strong>Angular / sharp forms</strong> → linked to anger and high-arousal negative affect</li>
+      <li><strong>Rounded forms</strong> → linked to positive / calm affective interpretations</li>
+    </ul>
+    <p>
+      This is consistent with the broader <em>kiki–bouba</em> intuition
+      <cite>[Ramachandran &amp; Hubbard, 2001]</cite>: humans reliably match spiky shapes with
+      "kiki"-like stimuli and rounded shapes with "bouba"-like stimuli — a cross-modal
+      correspondence that appears early and is stable across contexts.
+    </p>
+
+    <h3>Color Selection: Do We Feel Colors?</h3>
+    <p>
+      <strong>Jonauskaite &amp; Mohr (2025)</strong> conducted a systematic review of 132 studies
+      spanning 1895–2022, involving over 42,266 participants from 64 countries, confirming robust
+      color–emotion associations:
+    </p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Color Property</th><th>Emotional Association</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Light colors</td><td>Positive valence</td></tr>
+        <tr><td>Dark colors</td><td>Negative valence</td></tr>
+        <tr><td>Warm hues (red, yellow, orange)</td><td>High arousal / power</td></tr>
+        <tr><td>Cool hues (blue, green)</td><td>Low arousal / calm</td></tr>
+        <tr><td>High saturation</td><td>Intensity, excitement</td></tr>
+        <tr><td>Low saturation / grey</td><td>Neutral to negative low arousal</td></tr>
+      </tbody>
+    </table>
+    <p>
+      These patterns hold across methods and cultures, positioning color as a reliable affective
+      communication tool — though the associations are mostly correlative rather than causal.
+    </p>
+  </div>
+
+  <!-- 3. The Blob -->
+  <div class="section-card" id="blob">
+    <h2>3. The Blob — Mathematical Model</h2>
+    <p>
+      The core novelty of this project is <strong>EMOTE</strong>, a procedurally generated mesh
+      that reacts to the semantic emotional content and acoustic properties of speech. The blob is
+      constructed using concentric Unity LineRenderers, creating a depth field. The shape of each
+      ring is defined by a polar coordinate system modulated by Perlin noise.
+    </p>
+
+    <h3>Radius Formula</h3>
+    <p>For a given vertex at angle θ, the radius R is calculated as:</p>
+    <div class="math-block">
+      R(θ, t) = R_base + A_audio(t) + D_emotion · ( 2 · Noise(x, y) − 1 )
+    </div>
+    <ul>
+      <li><strong>R_base</strong> — resting radius of the layer</li>
+      <li><strong>A_audio(t)</strong> — audio reactivity term derived from the RMS amplitude of the current audio frame, boosted by a sensitivity factor k_lip</li>
+      <li><strong>D_emotion</strong> — distortion amplitude for the current emotion (e.g., high for Anger, low for Sadness)</li>
+      <li><strong>Noise(x, y)</strong> — sample from a 2D Perlin noise field</li>
+    </ul>
+
+    <h3>Coherent Noise Sampling</h3>
+    <p>
+      To ensure concentric layers move as a cohesive fluid entity rather than independent rings,
+      noise coordinates are derived using a global phase φ(t) and a spatial offset δ_layer:
+    </p>
+    <div class="math-block">
+      x = cos(θ) · S + δ_layer<br>
+      y = sin(θ) · S + φ(t) − τ_lag
+    </div>
+    <p>
+      Where <strong>τ_lag</strong> introduces a temporal delay for outer rings, creating an outward
+      ripple effect radiating from the center — giving the blob a fluid, organic feel.
+    </p>
+
+    <h3>Emotional Interpolation &amp; Uncertainty</h3>
+    <p>
+      The system does not switch between discrete emotional states. Instead, it interpolates
+      between a <strong>Neutral State</strong> (smooth, white, circular) and the predicted
+      <strong>Emotional State</strong> based on the model's confidence C.
+    </p>
+    <p>
+      To prevent washed-out colors during transition, a non-linear boost curve is applied to color
+      interpolation while keeping geometric transitions linear:
+    </p>
+    <div class="math-block">
+      Color_final = Lerp( Color_neutral, Color_emotion, 1 − (1 − C)³ )
+    </div>
+    <div class="finding-box">
+      This ensures that even low-confidence predictions (C ≈ 0.3) result in perceptible color shifts,
+      providing immediate visual feedback. The cubic easing curve front-loads the color transition
+      rather than making it feel sluggish.
+    </div>
+
+    <h3>Emotion States (Visual Preview)</h3>
+    <div class="emotion-grid">
+      <div class="emotion-card emotion-joy">
+        <div class="emotion-label">😄 Joy</div>
+        <div class="emotion-detail">Round · Bright yellow · Fast pulse · Scale 2.5</div>
+      </div>
+      <div class="emotion-card emotion-anger">
+        <div class="emotion-label">😠 Anger</div>
+        <div class="emotion-detail">Spiky · Red/orange · High distortion · Scale 5.0</div>
+      </div>
+      <div class="emotion-card emotion-sadness">
+        <div class="emotion-label">😢 Sadness</div>
+        <div class="emotion-detail">Contracted · Dark blue · Low distortion · Scale 2.0</div>
+      </div>
+      <div class="emotion-card emotion-fear">
+        <div class="emotion-label">😨 Fear</div>
+        <div class="emotion-detail">Erratic · Black/grey · Min distortion · Scale 10.0</div>
+      </div>
+      <div class="emotion-card emotion-surprise">
+        <div class="emotion-label">😮 Surprise</div>
+        <div class="emotion-detail">Flash white · High brightness · Expanding · Scale 3.5</div>
+      </div>
+      <div class="emotion-card emotion-love">
+        <div class="emotion-label">🩷 Love</div>
+        <div class="emotion-detail">Gentle · Pink/purple · Soft pulse · Scale 1.0</div>
+      </div>
+    </div>
+
+    <h3>Full Parameter Table</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Emotion</th><th>Scale</th><th>Distortion</th><th>Color</th><th>Color–Emotion Evidence</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Joy</td><td>2.5</td><td>0.8</td><td>Yellow/orange</td><td>Positive, high arousal (happiness, excitement)</td></tr>
+        <tr><td>Anger</td><td>5.0</td><td>1.0</td><td>Red/orange (warm)</td><td>Red: high arousal/power, negative (rage); warm = high energy</td></tr>
+        <tr><td>Sadness</td><td>2.0</td><td>0.2</td><td>Dark grey/blue</td><td>Dark: negative; grey: negative low arousal</td></tr>
+        <tr><td>Fear</td><td>10.0</td><td>0.1</td><td>Black/grey</td><td>Black: negative high arousal; dark: negative</td></tr>
+        <tr><td>Surprise</td><td>3.5</td><td>0.8</td><td>White flash</td><td>White: positive low arousal; transient light for novelty</td></tr>
+        <tr><td>Love</td><td>1.0</td><td>0.3</td><td>Pink/purple</td><td>Pink: positive; red: love/passion; purple: empowering</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4. System Architecture -->
+  <div class="section-card" id="architecture">
+    <h2>4. System Architecture</h2>
+    <p>
+      Unity acts as the central orchestrator for three asynchronous loops. All components run
+      locally, built from scratch with no reference material — including the Whisper integration,
+      Piper TTS server, emotion classifier, and local LLM.
+    </p>
+
+    <div class="loop-grid">
+      <div class="loop-card loop-input">
+        <div class="loop-title">🎙 Input Loop</div>
+        Captures user audio via key-press trigger, buffers it, and transcribes using a local
+        speech-to-text model (Whisper ggml-base, quantized).
+      </div>
+      <div class="loop-card loop-cog">
+        <div class="loop-title">🧠 Cognitive Loop</div>
+        Generates textual responses via Gemma 3 (1B) through Ollama while <em>simultaneously</em>
+        running DistilBERT emotion classification on the user's input.
+      </div>
+      <div class="loop-card loop-output">
+        <div class="loop-title">🔊 Output Loop</div>
+        Synthesizes speech via Piper TTS, streams audio to Unity, and modulates the EMOTE blob
+        in real-time based on amplitude RMS + emotion probability distributions.
+        <br><br><em>⚠ Primary latency bottleneck.</em>
+      </div>
+    </div>
+
+    <h3>Speech-to-Text — Whisper</h3>
+    <p>
+      Speech recognition is handled by OpenAI's <strong>Whisper</strong>, specifically the quantized
+      <code>ggml-base</code> model, integrated into Unity using the Whisper.Unity wrapper.
+    </p>
+
+    <h3>Generative Text — Gemma 3 (1B) via Ollama</h3>
+    <p>
+      Gemma 3 1B was selected as the heaviest model runnable locally without significantly hurting
+      latency. The Unity client communicates via REST API calls, with a <strong>sliding window
+      context buffer</strong> retaining the last 10 interactions for continuity.
+    </p>
+
+    <h3>Emotion Classification — Fine-tuned DistilBERT</h3>
+    <p>
+      Originally, a separate Gemma call was used for emotion classification. This was replaced with
+      a fine-tuned <strong>DistilBERT</strong> model to get logits and probability distributions
+      efficiently. DistilBERT was chosen for its significantly smaller size while retaining most
+      of BERT's capabilities.
+    </p>
+
+    <h4>Training Details</h4>
+    <ul>
+      <li><strong>Dataset:</strong> <code>dair-ai/emotion</code> — 16,000 labeled English tweets (Saravia et al., EMNLP 2018)</li>
+      <li><strong>Classes:</strong> Sadness (0), Joy (1), Love (2), Anger (3), Fear (4), Surprise (5)</li>
+      <li><strong>Loss:</strong> Cross-entropy on the classification head output</li>
+    </ul>
+    <p>
+      The fine-tuned model is deployed via a Flask Python server. It accepts text input and returns
+      a probability distribution vector P = [p₀, p₁, …, p₅] where ∑P = 1. These probabilities
+      drive the blob's visual layers.
+    </p>
+
+    <h3>Text-to-Speech — Piper</h3>
+    <p>
+      Piper was chosen for its speed and lightweight footprint. The <code>en_US-lessac-medium</code>
+      ONNX model is used. The pipeline:
+    </p>
+    <ol>
+      <li>Text is cleaned of non-alphanumeric artifacts.</li>
+      <li>The Python server pipes the text to the Piper executable.</li>
+      <li>Piper generates a raw 16-bit PCM WAV file.</li>
+      <li>Unity receives the byte stream, parses the WAV header, and creates an AudioClip for playback.</li>
+    </ol>
+  </div>
+
+  <!-- 5. Emotions -->
+  <div class="section-card" id="emotions">
+    <h2>5. Emotion Parameterization</h2>
+    <p>
+      The six emotion classes map directly to visual parameters grounded in the research reviewed
+      in Section 2. The angularity/roundness axis (kiki–bouba) is encoded in the distortion
+      amplitude — high distortion produces spiky, angular forms; low distortion produces smooth,
+      round blobs.
+    </p>
+    <p>
+      The <strong>Fear</strong> blob uses an unusually large scale (10.0) with minimal distortion,
+      producing a large but eerily still form — reflecting high arousal paired with freezing
+      behavior rather than explosive motion.
+    </p>
+    <p>
+      <strong>Neutral</strong> state is represented by a smooth, white, circular form at rest.
+      <strong>Surprise</strong> shares similar geometry but produces a transient high-brightness flash,
+      distinguishing it through temporal dynamics rather than a static color difference.
+    </p>
+    <div class="finding-box info">
+      The distinction between Neutral and Surprise cannot be captured in a still image — it is
+      encoded in <em>motion speed</em> and the brightness flash, requiring live interaction to perceive.
+    </div>
+  </div>
+
+  <!-- 6. User Study -->
+  <div class="section-card" id="user-study">
+    <h2>6. User Study</h2>
+    <p>
+      A preliminary user study was conducted with N=12 colleagues (students, engineers, and scientists,
+      aged 21–35). Participants saw demonstrations of both the blob agent and a facial agent expressing
+      the same emotions (joy and anger), then reported: (i) their preferred representation, (ii)
+      subjective feelings toward each, and (iii) their classification of the expressed emotion.
+    </p>
+
+    <h3>Preference Results</h3>
+    <div class="bar-item">
+      <span class="bar-label">Blob preferred for interaction</span>
+      <div class="bar-track"><div class="bar-fill" style="width:91.7%; background:#7c3aed;">11/12 (92%)</div></div>
+    </div>
+    <div class="bar-item">
+      <span class="bar-label">Facial preferred</span>
+      <div class="bar-track"><div class="bar-fill" style="width:8.3%; background:#9ca3af;">1/12</div></div>
+    </div>
+    <div class="bar-item">
+      <span class="bar-label">Cited facial as "creepy/terrifying"</span>
+      <div class="bar-track"><div class="bar-fill" style="width:41.7%; background:#e11d48;">5/12 (42%)</div></div>
+    </div>
+
+    <h3>Emotion Recognition Results</h3>
+    <div class="bar-item">
+      <span class="bar-label">Facial: correct &amp; confident</span>
+      <div class="bar-track"><div class="bar-fill" style="width:100%; background:#16a34a;">12/12 (100%)</div></div>
+    </div>
+    <div class="bar-item">
+      <span class="bar-label">Blob: correct (initial)</span>
+      <div class="bar-track"><div class="bar-fill" style="width:75%; background:#7c3aed;">9/12 (75%)</div></div>
+    </div>
+    <div class="bar-item">
+      <span class="bar-label">Blob: uncertain / deliberated</span>
+      <div class="bar-track"><div class="bar-fill" style="width:66.7%; background:#f59e0b;">8/12 (67%)</div></div>
+    </div>
+    <div class="bar-item">
+      <span class="bar-label">Learned blob cues after 2nd example</span>
+      <div class="bar-track"><div class="bar-fill" style="width:16.7%; background:#0891b2;">2/12</div></div>
+    </div>
+
+    <h3>Qualitative Themes</h3>
+    <table class="data-table">
+      <thead><tr><th>Theme</th><th>Count</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>"Creepy / terrifying" (facial agent)</td><td>5</td><td>Spontaneous comments without prompting</td></tr>
+        <tr><td>"AI–human separation" (pro-blob)</td><td>3</td><td>"I prefer non-human AI"</td></tr>
+        <tr><td>Learned blob cues after one more example</td><td>2</td><td>Contrast with anger demonstration enabled quick calibration</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Discussion</h3>
+    <p>
+      The gap in emotion recognition speed and confidence between facial and blob conditions is
+      unsurprising: humans have years of practice reading facial cues, whereas mappings from
+      abstract shape and color to discrete emotion categories are less standardized and less
+      familiar. Crucially, two participants who initially struggled with blob emotion recognition
+      correctly classified both joy and anger after a single additional exposure — suggesting that
+      blob-to-emotion associations may be learnable and not purely intuitive.
+    </p>
+    <div class="finding-box warning">
+      <strong>Key tension:</strong> Participants classified facial emotions with perfect accuracy
+      and high confidence — but strongly <em>rejected</em> facial agents for interaction. Accuracy
+      of emotion legibility is not the primary concern for user preference; anthropomorphic
+      discomfort dominates.
+    </div>
+  </div>
+
+  <!-- 7. Conclusion -->
+  <div class="section-card" id="conclusion">
+    <h2>7. Conclusion &amp; Future Work</h2>
+    <p>
+      By encoding emotional state in a continuous space of shape, motion, and color, EMOTE achieves
+      emotional legibility while avoiding the technical burden and ethical risks of anthropomorphic
+      realism. The design choices are grounded in existing research: angularity vs. roundness as an
+      affect cue, and the links between color properties (lightness, saturation, hue) and emotional
+      valence/arousal.
+    </p>
+    <p>
+      The user study supports the central motivation: most participants preferred the blob
+      representation, with several explicitly rejecting facial animation as unsettling. The
+      recognition gap is noted — and the evidence that blob cues can be learned with minimal
+      additional exposure suggests a promising direction.
+    </p>
+
+    <h3>Future Directions</h3>
+    <ul>
+      <li>
+        <strong>Standardized visual vocabularies</strong> — Develop and test more consistent emotion
+        cue sets. Just as humans learn to read non-verbal cues from each other, a standardized
+        "blob vocabulary" adopted industry-wide would accelerate user intuition.
+      </li>
+      <li>
+        <strong>Longer-term learning studies</strong> — Measure how quickly users develop reliable
+        blob-to-emotion mappings across extended interactions.
+      </li>
+      <li>
+        <strong>Depth model fusion</strong> — Combine VGGT's pose predictions with DA2's cleaner
+        depth maps for richer visual output contexts.
+      </li>
+      <li>
+        <strong>Continuous emotion space</strong> — Move beyond six discrete classes toward a
+        valence/arousal 2D plane, allowing more nuanced and blended emotional expressions.
+      </li>
+      <li>
+        <strong>Latency reduction</strong> — The output loop (TTS generation) is the primary
+        bottleneck; exploring streaming TTS or on-device neural vocoders could dramatically
+        improve interaction fluidity.
+      </li>
+    </ul>
+  </div>
+
+  <!-- References -->
+  <div class="section-card" id="references">
+    <h2>8. References</h2>
+    <ol class="ref-list">
+      <li>Ramachandran, V. S. &amp; Hubbard, E. M. (2001). Synaesthesia — A Window Into Perception, Thought and Language. <em>Journal of Consciousness Studies</em>, 8(12):3–34.</li>
+      <li>Vainio, L., Mo, X., &amp; Vainio, M. (2025). Is Kiki angry and Bouba happy? Association between emotions, shapes, and sounds. <em>Psychological Research</em>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12259753/" target="_blank">PMC12259753</a></li>
+      <li>Jonauskaite, D. &amp; Mohr, C. (2025). Do we feel colours? A systematic review of 128 years of psychological research linking colours and emotions. <em>Psychon Bull Rev</em>, 32(4):1457–1486. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12325498/" target="_blank">PMC12325498</a></li>
+      <li>Mori, M. (1970). The uncanny valley. <em>Energy</em>, 7(4):33–35.</li>
+      <li>Saravia, E. et al. (2018). CARER: Contextualized Affect Representations for Emotion Recognition. <em>EMNLP 2018</em>. <a href="https://aclanthology.org/D18-1404" target="_blank">ACL Anthology</a></li>
+      <li>Sanh, V. et al. (2019). DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. <a href="https://arxiv.org/abs/1910.01108" target="_blank">arXiv:1910.01108</a></li>
+      <li>Shaver, P., Schwartz, J., Kirson, D., &amp; O'Connor, C. (1987). Emotion knowledge: Further exploration of a prototype approach. <em>Journal of Personality and Social Psychology</em>, 52(6):1061–1086.</li>
+      <li>Picard, R. W. (1997). <em>Affective Computing</em>. MIT Press.</li>
+      <li>Reeves, B. &amp; Nass, C. (1996). <em>The Media Equation</em>. Cambridge University Press.</li>
+      <li>Gonçalves, J. et al. (2024). FaceVis: Exploring a Robot's Face for Affective Visualisation Design. <em>CHI LBW</em>. <a href="https://www.jorgegoncalves.com/docs/chi24lbw.pdf" target="_blank">PDF</a></li>
+    </ol>
+  </div>
+
+</div><!-- end w3-content -->
+
+<footer class="page-footer">
+  <a href="index.html">← Michael Sheroubi's Portfolio</a> &nbsp;|&nbsp; February 2026
+</footer>
+
+</body>
+</html>
