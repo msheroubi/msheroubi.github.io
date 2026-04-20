@@ -199,6 +199,48 @@ cite { font-style: normal; color: #7c3aed; font-size: 0.85rem; }
 .ref-list { font-size: 0.82rem; color: #444; line-height: 1.8; }
 .ref-list li { margin-bottom: 6px; }
 .ref-list a { color: #7c3aed; }
+
+.project-figure {
+  margin: 20px 0;
+  text-align: center;
+}
+.project-figure img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.project-figure figcaption {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+.project-figure-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.project-figure-row figure {
+  flex: 1;
+  min-width: 180px;
+  max-width: 48%;
+  text-align: center;
+}
+.project-figure-row figure img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.project-figure-row figure figcaption {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #666;
+  font-style: italic;
+}
 </style>
 <body class="w3-light-grey">
 
@@ -230,6 +272,11 @@ cite { font-style: normal; color: #7c3aed; font-size: 0.85rem; }
       Gemma 3 (1B) via Ollama for language generation, a fine-tuned DistilBERT for emotion
       classification, and Piper for text-to-speech, all orchestrated by Unity.
     </p>
+
+    <figure class="project-figure">
+      <img src="./res/emote_blob_hero.png" alt="The EMOTE blob agent in its joy state — bright yellow, rounded, pulsing">
+      <figcaption>The EMOTE blob in its Joy state — bright yellow, smooth, and expanding. Shape, color, and motion all encode emotional state without a face.</figcaption>
+    </figure>
   </div>
 
   <!-- Table of Contents -->
@@ -409,6 +456,36 @@ cite { font-style: normal; color: #7c3aed; font-size: 0.85rem; }
         <div class="emotion-label">🩷 Love</div>
         <div class="emotion-detail">Gentle · Pink/purple · Soft pulse · Scale 1.0</div>
       </div>
+    </div>
+
+    <div class="project-figure-row">
+      <figure>
+        <img src="./res/emote_anger.png" alt="EMOTE blob in Anger state — large, spiky, deep red/orange">
+        <figcaption>Anger — spiky, high distortion, red/orange</figcaption>
+      </figure>
+      <figure>
+        <img src="./res/emote_joy.png" alt="EMOTE blob in Joy state — round, bright yellow, gentle pulse">
+        <figcaption>Joy — round, bright yellow, scale 2.5</figcaption>
+      </figure>
+      <figure>
+        <img src="./res/emote_sadness.png" alt="EMOTE blob in Sadness state — contracted, dark blue/grey">
+        <figcaption>Sadness — contracted, dark blue/grey</figcaption>
+      </figure>
+      <figure>
+        <img src="./res/emote_love.png" alt="EMOTE blob in Love state — soft pink/purple, gentle ripple">
+        <figcaption>Love — pink/purple, soft ripple</figcaption>
+      </figure>
+    </div>
+
+    <div class="project-figure-row">
+      <figure>
+        <img src="./res/emote_ablation_shape.png" alt="Shape-only ablation: blob shown in greyscale without color cues">
+        <figcaption>Shape Only — color removed to isolate geometry/motion cues</figcaption>
+      </figure>
+      <figure>
+        <img src="./res/emote_ablation_color.png" alt="Color-only ablation: perfectly round blob with only color varying">
+        <figcaption>Color Only — shape fixed as circle to isolate color cues</figcaption>
+      </figure>
     </div>
 
     <h3>Full Parameter Table</h3>
@@ -593,6 +670,7 @@ cite { font-style: normal; color: #7c3aed; font-size: 0.85rem; }
       of emotion legibility is not the primary concern for user preference; anthropomorphic
       discomfort dominates.
     </div>
+
   </div>
 
   <!-- 7. Conclusion -->

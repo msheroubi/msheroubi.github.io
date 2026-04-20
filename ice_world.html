@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+<title>Ice World: Algorithms - Michael Sheroubi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="blogstyle.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5,h6 { font-family: "Raleway", sans-serif; }
+
+.page-header {
+  background: linear-gradient(135deg, #03045e 0%, #023e8a 50%, #0096c7 100%);
+  color: white;
+  padding: 48px 32px 36px 32px;
+}
+.page-header h1 { color: white; margin: 0 0 8px 0; font-size: 2rem; }
+.page-header .subtitle { color: #90e0ef; font-size: 1rem; margin: 0 0 16px 0; }
+.page-header .meta { color: #ccc; font-size: 0.9rem; }
+
+.back-link {
+  display: inline-block;
+  color: #90e0ef;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+.back-link:hover { color: white; }
+
+.canva-link-btn {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 0.88rem;
+  margin-top: 12px;
+  transition: background 0.2s;
+}
+.canva-link-btn:hover { background: rgba(255,255,255,0.28); color: white; }
+
+.section-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  margin: 16px 0;
+  padding: 28px 32px;
+}
+.section-card h2 {
+  color: #0077b6;
+  border-bottom: 2px solid #caf0f8;
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+.section-card h3 { color: #03045e; margin-top: 24px; }
+.section-card h4 { color: #333; margin-top: 20px; }
+
+.abstract-box {
+  background: #f0f8ff;
+  border-left: 4px solid #0096c7;
+  padding: 20px 24px;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  margin: 0;
+}
+
+.finding-box {
+  background: #e0f7fa;
+  border-left: 4px solid #0096c7;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border-radius: 0 4px 4px 0;
+}
+.finding-box.warning {
+  background: #fefce8;
+  border-color: #ca8a04;
+}
+.finding-box.info {
+  background: #f0f8ff;
+  border-color: #0096c7;
+}
+.finding-box.note {
+  background: #f3e8ff;
+  border-color: #7c3aed;
+}
+
+.math-block {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 14px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  margin: 12px 0;
+  color: #1a1a2e;
+  overflow-x: auto;
+}
+
+.code-block {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 6px;
+  padding: 16px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+  margin: 14px 0;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.code-block .kw  { color: #89b4fa; }
+.code-block .kw2 { color: #cba6f7; }
+.code-block .cm  { color: #6c7086; font-style: italic; }
+.code-block .str { color: #a6e3a1; }
+.code-block .num { color: #fab387; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.9rem;
+}
+.data-table th {
+  background: #0077b6;
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+}
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.data-table tr:nth-child(even) td { background: #f0f8ff; }
+.data-table tr:hover td { background: #e0f7fa; }
+
+.tag {
+  display: inline-block;
+  background: #0096c7;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin: 2px;
+}
+.tag.green  { background: #16a34a; }
+.tag.amber  { background: #b45309; }
+.tag.purple { background: #7c3aed; }
+.tag.teal   { background: #0d9488; }
+
+.toc a { color: #0077b6; text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.toc li { margin: 4px 0; }
+
+/* System module cards */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.module-card {
+  background: #f0f8ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+}
+.module-card .module-title { font-weight: bold; color: #0077b6; margin-bottom: 6px; font-size: 0.9rem; }
+
+/* Pipeline steps */
+.pipeline-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 10px 0;
+}
+.step-num {
+  background: #0096c7;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body { flex: 1; font-size: 0.9rem; }
+
+/* Equation labels */
+.eq-label { font-size: 0.8rem; color: #888; font-style: italic; margin-top: -6px; margin-bottom: 10px; }
+
+.project-figure {
+  margin: 20px 0;
+  text-align: center;
+}
+.project-figure img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.project-figure figcaption {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+.project-figure-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.project-figure-row figure {
+  flex: 1;
+  min-width: 180px;
+  max-width: 48%;
+  text-align: center;
+}
+.project-figure-row figure img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.project-figure-row figure figcaption {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #666;
+  font-style: italic;
+}
+
+footer.page-footer {
+  background: #03045e;
+  color: #888;
+  text-align: center;
+  padding: 24px;
+  margin-top: 32px;
+  font-size: 0.85rem;
+}
+footer.page-footer a { color: #90e0ef; text-decoration: none; }
+</style>
+<body class="w3-light-grey">
+
+<div class="w3-content" style="max-width:960px">
+
+  <!-- Header -->
+  <div class="page-header">
+    <a href="index.html" class="back-link">← Back to Portfolio</a>
+    <h1>Ice World: Algorithms</h1>
+    <p class="subtitle">Procedural Generation &amp; Simulation Algorithms in Unity</p>
+    <p class="meta">
+      Michael Sheroubi &nbsp;|&nbsp; December 2025 &nbsp;&nbsp;
+      <span class="tag">Unity</span>
+      <span class="tag teal">Procedural Generation</span>
+      <span class="tag green">Simulation</span>
+      <span class="tag amber">Reinforcement Learning</span>
+      <span class="tag purple">AI / Boids</span>
+    </p>
+    <a href="https://canva.link/gycw533lwdo14nl" target="_blank" class="canva-link-btn">🎨 View Full Canva Presentation »</a>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <h2>Overview</h2>
+    <p class="abstract-box">
+      Ice World is a Unity project built around a suite of interconnected procedural and simulation
+      systems. Each system is a standalone Unity Editor tool or runtime component — covering
+      village layout generation, icicle and castle mesh synthesis, fractal snowflakes, GPU/CPU
+      synchronized Gerstner wave shaders, a classic boids flocking simulation, a Q-learning wolf
+      pack hunter, species-specific prey AI, procedural ski path generation, and a physics-driven
+      snowball carver. The emphasis throughout is on clean algorithmic design: discrete grid models,
+      recursive fractals, mesh batching for render performance, and mathematical synchronization
+      between GPU shaders and CPU physics.
+    </p>
+    <br>
+    <div class="module-grid">
+      <div class="module-card"><div class="module-title">🏘 Village Generator</div>Random-walk roads, adjacency-based house placement, mesh batching</div>
+      <div class="module-card"><div class="module-title">🧊 Icicle Generator</div>Polar coordinate meshes with vertex noise, cluster batching</div>
+      <div class="module-card"><div class="module-title">🏰 Castle Generator</div>Parametric towers, walls, and alternating battlements</div>
+      <div class="module-card"><div class="module-title">❄️ Snowflake Generator</div>Recursive 6-fold fractal branching with length decay</div>
+      <div class="module-card"><div class="module-title">🌊 Wave Shader</div>Gerstner waves — GPU vertex displacement + CPU buoyancy sync</div>
+      <div class="module-card"><div class="module-title">🐟 Boids</div>Separation, alignment, cohesion with cylindrical bounds + raycasts</div>
+      <div class="module-card"><div class="module-title">🐺 Hunt AI</div>Q-learning wolf pack + species-specific prey behavior</div>
+      <div class="module-card"><div class="module-title">⛷️ Ski Path</div>Fall-line + sine-turn skeleton, Catmull-Rom smoothing</div>
+      <div class="module-card"><div class="module-title">🔵 Snowball Carver</div>Physics growth + deferred terrain deformation queue</div>
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="section-card">
+    <h2>Contents</h2>
+    <ol class="toc">
+      <li><a href="#village">Village Generator</a></li>
+      <li><a href="#icicle">Icicle Generator</a></li>
+      <li><a href="#castle">Castle Generator</a></li>
+      <li><a href="#snowflake">Snowflake Generator</a></li>
+      <li><a href="#waves">Wave Shaders (Gerstner)</a></li>
+      <li><a href="#boids">Boids Flocking Simulation</a></li>
+      <li><a href="#hunt">Hunt: Wolf Pack Q-Learning &amp; Prey AI</a></li>
+      <li><a href="#ski">Ski Path Generation</a></li>
+      <li><a href="#snowball">Snowball Carver</a></li>
+    </ol>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 1. Village Generator -->
+  <!-- ================================================ -->
+  <div class="section-card" id="village">
+    <h2>1. Village Generator</h2>
+    <p>
+      The <code>VillageGenerator</code> script is a Unity Editor tool that procedurally generates
+      an organic medieval-style village on a grid, including a town square, wandering roads, and
+      irregular houses that hug nearby streets. The algorithm combines a discrete layout phase on a
+      2D grid with mesh batching to produce a single optimized prefab.
+    </p>
+
+    <h3>Grid Structure &amp; Parameterization</h3>
+    <p>
+      The generator operates on a <strong>gridSize × gridSize</strong> square grid where each cell
+      represents a world-space tile of size <code>tileSize</code>. Each tile is assigned a type
+      from <code>{Empty, Road, House, Square}</code>, stored in <code>grid[x,z]</code>. Key parameters:
+    </p>
+    <ul>
+      <li><strong>Layout:</strong> <code>gridSize</code>, <code>tileSize</code>, <code>townSquareSize</code></li>
+      <li><strong>Organic factors:</strong> <code>irregularity</code>, <code>rotationChaos</code>, <code>streetCloseness</code></li>
+      <li><strong>Architecture:</strong> <code>houseDensity</code>, <code>minHeight</code>, <code>maxHeight</code>, <code>roofHeight</code></li>
+    </ul>
+
+    <h3>Generation Pipeline</h3>
+    <div class="pipeline-step"><div class="step-num">1</div><div class="step-body"><strong>Grid layout:</strong> Allocate the grid, call <code>GenerateOrganicLayout()</code> to place the town square and wandering roads, then <code>PlaceHouses()</code> to fill adjacent empty cells stochastically.</div></div>
+    <div class="pipeline-step"><div class="step-num">2</div><div class="step-body"><strong>Mesh accumulation:</strong> Iterate over all non-empty tiles — Square/Road tiles become flat scaled planes; House tiles compute organic position/rotation and call <code>BuildHouse()</code> to produce wall + roof mesh entries.</div></div>
+    <div class="pipeline-step"><div class="step-num">3</div><div class="step-body"><strong>Final assembly:</strong> Each category list (roadMesh, squareMesh, wallMesh, roofMesh) is combined via <code>CombineInstance</code>, attached as children under a village root, and saved as a prefab.</div></div>
+
+    <h3>Town Square &amp; Wandering Roads</h3>
+    <p>
+      The town square is placed <strong>slightly off-center</strong> (random offset in [−5, 5] cells,
+      clamped to bounds) and filled with <code>TileType.Square</code>. Roads are generated via
+      multiple <strong>biased random walks</strong> from the town square:
+    </p>
+    <div class="math-block">
+      Start: (x, z) at square center, direction (dirX, dirZ) ∈ {-1,0,1}² \ {(0,0)}<br>
+      Each step: mark cell as Road if valid &amp; empty<br>
+      With P=0.3: perturb dirX or dirZ (meander).<br>
+      Move to (x+dirX, z+dirZ); stop at boundary.
+    </div>
+    <p>This guarantees contiguous road paths while producing organic, non-grid-aligned trajectories.</p>
+
+    <h3>House Placement &amp; Street Hugging</h3>
+
+    <h4>Adjacency-Based Seeding</h4>
+    <p>For each interior cell <em>(x, z)</em> that is <code>Empty</code> and has at least one 4-neighbor that is <code>Road</code> or <code>Square</code>, the tile becomes <code>House</code> with probability equal to <code>houseDensity</code>. Houses only appear next to streets, forming street-facing rows.</p>
+
+    <h4>Organic Pose Computation</h4>
+    <p>The final house transform is computed in four steps:</p>
+    <div class="math-block">
+      1. Base position:   p_base  = (x·tileSize, 0, z·tileSize) + offset<br>
+      2. Street hugging:  p_street = p_base  + d⃗ · (0.4 · tileSize · streetCloseness)<br>
+      3. Positional noise: Δx,Δz ~ U(-irregularity·tileSize, +irregularity·tileSize)<br>
+         p_final = p_street + (Δx, 0, Δz)<br>
+      4. Rotation:        R_face = LookRotation(-d⃗)<br>
+         θ ~ U(-rotationChaos, +rotationChaos)<br>
+         R_final = R_face · Ry(θ)
+    </div>
+    <p>This yields buildings that visually align to streets but are imperfectly placed and rotated, producing an organic hand-built feeling.</p>
+
+    <h3>House Geometry</h3>
+    <p><strong>Walls:</strong> A cube primitive is scaled to random width and depth:</p>
+    <div class="math-block">
+      w ~ tileSize · U(0.6, 0.9),  d ~ tileSize · U(0.6, 0.9),  h ~ U(minHeight, maxHeight)
+    </div>
+    <p><strong>Gabled Roof:</strong> A custom triangular prism from <code>GeneratePrismMesh</code>. Two triangular gables (front/back) and two sloped roof faces are defined using half-width <em>hw = w/2</em> and half-depth <em>hd = d/2</em>. The apex ridge runs along the house length at height <code>roofHeight</code>. The roof sits at <em>p_final + (0, h, 0)</em> with <em>R_final</em>.</p>
+
+    <h3>Roads, Squares &amp; Mesh Batching</h3>
+    <p>
+      For each road/square tile, <code>AddFlatTile</code> instantiates a Unity <code>Plane</code>,
+      scales it by <code>tileSize · 0.105</code> (slight overlap to avoid gaps), adds its mesh to
+      the appropriate <code>CombineInstance</code> list, and immediately destroys the temporary
+      object. All four categories (Roads, TownSquare, Walls, Roofs) are then combined into large
+      static meshes to minimise draw calls, and the result is saved as a reusable prefab.
+    </p>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 2. Icicle Generator -->
+  <!-- ================================================ -->
+  <div class="section-card" id="icicle">
+    <h2>2. Icicle Generator</h2>
+    <p>
+      The <code>IcicleGenerator</code> script procedurally generates 3D icicle clusters and saves
+      them as mesh and prefab assets. It constructs tapered cylindrical meshes with vertex
+      irregularities, then batches them into a single optimized mesh.
+    </p>
+
+    <h3>Configuration Parameters</h3>
+    <table class="data-table">
+      <thead><tr><th>Group</th><th>Parameter</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Cluster</td><td><code>icicleCount</code>, <code>clusterSize</code></td><td>Number of icicles and width/depth area of the cluster</td></tr>
+        <tr><td>Shape</td><td><code>minLength</code>, <code>maxLength</code>, <code>baseRadius</code></td><td>Length range and base width of each icicle</td></tr>
+        <tr><td>Detail</td><td><code>radialSegments</code>, <code>verticalSegments</code>, <code>irregularity</code></td><td>Mesh resolution and surface wobble</td></tr>
+        <tr><td>Output</td><td><code>savePath</code></td><td>Destination for generated mesh and prefab assets</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Cluster Generation Pipeline</h3>
+    <p>For each icicle, a position is sampled within the cluster area:</p>
+    <div class="math-block">
+      x ~ U(-W/2, W/2),  z ~ U(-D/2, D/2),  L ~ U(minLength, maxLength)
+    </div>
+    <p>Each icicle is built with <code>CreateProceduralIcicle(L)</code>, combined via a local TRS matrix, then all instances are merged into one mesh.</p>
+
+    <h3>Procedural Icicle Mesh</h3>
+    <p>Vertices are generated in concentric rings along the vertical axis using polar coordinates with linear tapering and noise:</p>
+    <div class="math-block">
+      θ_r = 2π·r / R_s<br>
+      t_k = k / V_s<br>
+      R_k = (1 - t_k)·R₀    (linear taper from base to tip)<br><br>
+      v_{r,k} = (cos(θ_r)·R_k + Δx,  −t_k·L,  sin(θ_r)·R_k + Δz)   for body rings<br>
+      v_tip  = (0, −L, 0)                                               for the apex<br><br>
+      Δx, Δz ~ U(−irregularity, +irregularity)
+    </div>
+    <p>Adjacent rings are connected with quad strips; the final segment fans into the shared tip vertex forming a conic point. The combined mesh is saved as a timestamped asset and wrapped in a prefab with <code>MeshFilter</code> + <code>MeshRenderer</code>.</p>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 3. Castle Generator -->
+  <!-- ================================================ -->
+  <div class="section-card" id="castle">
+    <h2>3. Castle Generator</h2>
+    <p>
+      The <code>CastleGenerator</code> builds a rectangular castle from four cylindrical corner
+      towers, four connecting wall segments, and optional battlements — all combined into a single
+      mesh prefab with a <code>BoxCollider</code>.
+    </p>
+
+    <h3>Layout Parameters</h3>
+    <ul>
+      <li><strong>Footprint:</strong> <code>width</code>, <code>length</code>, <code>wallHeight</code>, <code>wallThickness</code></li>
+      <li><strong>Towers:</strong> <code>towerHeight</code>, <code>towerRadius</code>, <code>towerResolution</code> (roundness)</li>
+      <li><strong>Details:</strong> <code>addBattlements</code>, <code>battlementSize</code></li>
+    </ul>
+
+    <h3>Generation Pipeline</h3>
+    <div class="pipeline-step"><div class="step-num">1</div><div class="step-body"><strong>Setup:</strong> Ensure save directory exists; initialize <code>CombineInstance</code> list.</div></div>
+    <div class="pipeline-step"><div class="step-num">2</div><div class="step-body">
+      <strong>Corner towers:</strong> Compute half-dimensions w_h = width/2, l_h = length/2. Place a cylinder at each of the four corners (±w_h, 0, ±l_h), scaled to <code>(2·towerRadius, towerHeight/2, 2·towerRadius)</code>. Optionally ring the top with 8 battlements.
+    </div></div>
+    <div class="pipeline-step"><div class="step-num">3</div><div class="step-body">
+      <strong>Walls:</strong> Front/back walls centered at (0, 0, ±l_h) with length reduced by <code>1.5·towerRadius</code> on each side to avoid overlapping towers. Left/right walls similarly centered at (±w_h, 0, 0). Each wall optionally crowned with linear crenellations.
+    </div></div>
+    <div class="pipeline-step"><div class="step-num">4</div><div class="step-body"><strong>Mesh combination &amp; prefab export:</strong> All instances merged into a 32-bit index mesh; normals recalculated; prefab created with MeshFilter, MeshRenderer, and BoxCollider.</div></div>
+
+    <h3>Battlement Geometry</h3>
+    <h4>Ring Battlements (Towers)</h4>
+    <p>8 cubic blocks distributed around the tower top circumference:</p>
+    <div class="math-block">
+      θ_i = i · 360° / 8     (i = 0..7)<br>
+      o⃗_i = Ry(θ_i) · forward⃗ · towerRadius<br>
+      p_i = (x, towerHeight, z) + o⃗_i + (0, battlementSize/2, 0)
+    </div>
+
+    <h4>Linear Battlements (Walls)</h4>
+    <p>Starting from one end of the wall top, blocks are placed at alternating "block" and "gap" intervals of <code>battlementSize</code>, producing a crenellated pattern. For horizontal walls:</p>
+    <div class="math-block">
+      p = p₀ + (currentDist + battlementSize/2,  battlementSize/2,  0)<br>
+      scale = (battlementSize, battlementSize, wallThickness)
+    </div>
+    <p>Vertical walls use the Z axis instead. A boolean flag alternates the gap pattern each step.</p>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 4. Snowflake Generator -->
+  <!-- ================================================ -->
+  <div class="section-card" id="snowflake">
+    <h2>4. Snowflake Generator</h2>
+    <p>
+      The <code>SnowflakeGenerator</code> produces a 3D fractal snowflake by recursively branching
+      segments around six radial arms, with geometric length decay and angle offsets. All segment
+      meshes are combined into a single optimized asset.
+    </p>
+
+    <h3>Parameters</h3>
+    <ul>
+      <li><code>recursionDepth</code> — levels of branching</li>
+      <li><code>initialLength</code> — base arm length</li>
+      <li><code>widthMultiplier</code> — segment thickness relative to length</li>
+      <li><code>lengthDecay</code> — shrinkage per recursion level</li>
+      <li><code>branchAngle</code> — angular offset of lateral branches</li>
+    </ul>
+
+    <h3>Six-Fold Symmetry</h3>
+    <p>The same recursive branching rule is applied six times, once per arm, each rotated by 60°:</p>
+    <div class="math-block">
+      R_i = Rz(60° · i)  for i ∈ {0, 1, 2, 3, 4, 5}<br>
+      GenerateBranch(origin, R_i, initialLength, recursionDepth)
+    </div>
+
+    <h3>Recursive Branching Rule</h3>
+    <p><strong>Stopping condition:</strong> <code>currentDepth ≤ 0 → return</code></p>
+    <p>For each call, a rectangular prism segment is placed along the branch direction:</p>
+    <div class="math-block">
+      w = length · widthMultiplier<br>
+      p_end = p_start + R · up⃗ · length<br>
+      AddSegment(p_start, p_end, w, R)
+    </div>
+    <p>Three recursive children are then spawned:</p>
+    <div class="math-block">
+      p_branch = Lerp(p_start, p_end, 0.6)<br>
+      L' = length · lengthDecay<br><br>
+      R_left  = R · Rz(+branchAngle)<br>
+      R_right = R · Rz(-branchAngle)<br><br>
+      GenerateBranch(p_branch, R_left,  L', depth-1)   ← left side branch<br>
+      GenerateBranch(p_branch, R_right, L', depth-1)   ← right side branch<br>
+      GenerateBranch(p_end,    R,       0.5·L', depth-1) ← shortened stem continuation
+    </div>
+
+    <h3>Segment Geometry</h3>
+    <p>
+      Each branch segment is a scaled Unity cube (rectangular prism). The cube is sized to
+      <code>(w, L, 0.2w)</code>, positioned at the segment midpoint, and rotated to align its
+      local up axis with the branch direction. A <code>CombineInstance</code> is filled and the
+      temporary object destroyed. After all recursion, the final combined mesh is saved as a 32-bit
+      indexed asset and optionally packed into a prefab.
+    </p>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 5. Wave Shaders -->
+  <!-- ================================================ -->
+  <div class="section-card" id="waves">
+    <h2>5. Wave Shaders — Gerstner Waves</h2>
+    <p>
+      Standard sinusoidal waves produce symmetric peaks and troughs. Real ocean waves exhibit sharp
+      crests, flat troughs, and circular orbital motion. <strong>Gerstner waves</strong> solve this
+      by displacing vertices in circular orbits — producing peaked crests and a convincing rolling swell.
+    </p>
+
+    <h3>The Gerstner Wave Displacement</h3>
+    <div class="math-block">
+      P(t) = P₀ + ΔP(t)<br><br>
+      ΔP(t) = | A · D_x · cos(f) |   (X displacement)<br>
+              | A · sin(f)        |   (Y displacement — height)<br>
+              | A · D_z · cos(f)  |   (Z displacement)<br><br>
+      f = k · (D⃗ · P_xz − c·t)      (phase function)<br><br>
+      k = 2π/λ   (wave number)<br>
+      c = √(g/k)  (wave speed, g ≈ 9.8 m/s²)<br>
+      A = steepness (amplitude)
+    </div>
+    <p>Vertices rise and fall (Y via sin(f)) while also moving horizontally in the wave direction (X/Z via cos(f)), producing orbital motion.</p>
+
+    <h3>WaveManager — Singleton &amp; Global State</h3>
+    <p>
+      <code>WaveManager</code> is a singleton that provides a <em>single source of truth</em> for
+      all wave parameters, accessible globally throughout the game. It uses
+      <code>DontDestroyOnLoad</code> to persist across scenes.
+    </p>
+
+    <table class="data-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>wavelength</code></td><td>float</td><td>Wavelength λ in world units. Larger λ = slower, broader waves.</td></tr>
+        <tr><td><code>steepness</code></td><td>float</td><td>Amplitude A ∈ [0,1]. Controls wave height.</td></tr>
+        <tr><td><code>speed</code></td><td>float</td><td>Multiplier for wave speed c. Adjusts temporal phase evolution.</td></tr>
+        <tr><td><code>direction</code></td><td>Vector2</td><td>Normalized direction (D_x, D_z) of wave propagation.</td></tr>
+      </tbody>
+    </table>
+
+    <p>Every frame, parameters are broadcast to the GPU via global shader properties:</p>
+    <div class="code-block">
+<span class="kw2">private</span> <span class="kw2">void</span> <span class="kw">Update</span>()
+{
+    Shader.SetGlobalFloat(<span class="str">"_WaterWavelength"</span>, wavelength);
+    Shader.SetGlobalFloat(<span class="str">"_WaterSteepness"</span>, steepness);
+    Shader.SetGlobalFloat(<span class="str">"_WaterSpeed"</span>, speed);
+    Shader.SetGlobalVector(<span class="str">"_WaterDirection"</span>, direction);
+}</div>
+
+    <h3>CPU Buoyancy — GetWaveHeight</h3>
+    <p>The vertical component of the Gerstner wave is evaluated in C# so physics objects see the <em>same</em> wave field as the shader:</p>
+    <div class="math-block">
+      y = A · sin(k · (D⃗ · P_xz − c·t))
+    </div>
+    <div class="code-block">
+<span class="kw2">public</span> <span class="kw2">float</span> <span class="kw">GetWaveHeight</span>(Vector3 position)
+{
+    <span class="kw2">float</span> k = <span class="num">2</span> * Mathf.PI / wavelength;
+    <span class="kw2">float</span> c = Mathf.Sqrt(<span class="num">9.8f</span> / k);
+    Vector2 d = direction.normalized;
+    <span class="kw2">float</span> f = k * (Vector2.Dot(d, <span class="kw2">new</span> Vector2(position.x, position.z))
+                   - c * Time.time * speed);
+    <span class="kw2">return</span> steepness * Mathf.Sin(f);
+}</div>
+
+    <div class="finding-box info">
+      <strong>Only Y is computed</strong> — the full Gerstner implementation displaces X and Z too,
+      but computing only the vertical component is sufficient for buoyancy physics and is significantly
+      cheaper. The X/Z orbital motion is handled purely by the GPU shader.
+    </div>
+
+    <h3>GPU Shader Graph Vertex Displacement</h3>
+    <p>The Shader Graph reads global wave parameters and applies the full displacement to every mesh vertex:</p>
+    <div class="math-block">
+      P_new = P_old + steepness · | D_x · sin(f) |<br>
+                                  | sin(f)        |<br>
+                                  | D_z · sin(f)  |
+    </div>
+
+    <h3>GPU/CPU Synchronization — Why It Matters</h3>
+    <p>Because both the GPU shader and the CPU physics use the same <code>WaveManager</code> parameters and evaluate equivalent math:</p>
+    <ul>
+      <li>When <code>wavelength</code> changes, both shader and physics immediately update.</li>
+      <li>When <code>steepness</code> increases, waves appear taller visually <em>and</em> exert stronger buoyancy.</li>
+      <li>When <code>direction</code> rotates, the entire wave field rotates consistently on both GPU and CPU.</li>
+    </ul>
+    <div class="finding-box warning">
+      Without synchronization, visual waves drift ahead of physics waves, causing floating objects to
+      sink through or float above the rendered surface — a jarring artifact.
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 6. Boids -->
+  <!-- ================================================ -->
+  <div class="section-card" id="boids">
+    <h2>6. Boids Flocking Simulation</h2>
+    <p>
+      A classic boids simulation with separation, alignment, and cohesion, constrained to a
+      cylindrical "flight deck" volume and extended with raycast-based terrain avoidance.
+    </p>
+
+    <h3>Configuration</h3>
+    <ul>
+      <li><strong>Spawn:</strong> <code>boidPrefab</code>, <code>spawnCount</code>, <code>spawnRadius</code></li>
+      <li><strong>Dynamics:</strong> <code>minSpeed</code>, <code>maxSpeed</code>, <code>perceptionRadius</code></li>
+      <li><strong>Weights:</strong> <code>separationWeight</code>, <code>alignmentWeight</code>, <code>cohesionWeight</code></li>
+      <li><strong>Cylindrical bounds:</strong> <code>boundsRadius</code>, <code>minHeight</code>, <code>maxHeight</code>, <code>boundsWeight</code></li>
+      <li><strong>Obstacle avoidance:</strong> <code>obstacleMask</code>, <code>obstacleAvoidDistance</code></li>
+    </ul>
+
+    <h3>Spawning</h3>
+    <p>Each boid is placed randomly in a vertical cylinder, with initial velocity random in XZ:</p>
+    <div class="math-block">
+      (x,z) from Random.insideUnitCircle · spawnRadius<br>
+      y ~ U(minHeight, maxHeight)<br>
+      v₀ = Random.insideUnitSphere · maxSpeed,  v₀.y = 0
+    </div>
+
+    <h3>Neighborhood-Based Flocking Forces</h3>
+    <p>For each boid, three steering forces are computed over neighbors within <code>perceptionRadius</code>:</p>
+    <div class="math-block">
+      Separation: F_sep += (p - p_other) / d²        (inverse-square repulsion)<br>
+      Alignment:  F_align = (1/N)·Σ v_other − v       (match average heading)<br>
+      Cohesion:   F_coh  = (1/N)·Σ p_other − p        (attract to centre of mass)
+    </div>
+
+    <h3>Cylindrical Bounds Enforcement</h3>
+    <div class="math-block">
+      o⃗ = (p_x − c_x, 0, p_z − c_z)<br>
+      if |o⃗| > boundsRadius: F_bounds += −ô  (inward horizontal)<br>
+      if p.y &lt; minHeight:    F_bounds += 5·ŷ  (push up)<br>
+      if p.y > maxHeight:    F_bounds += -5·ŷ  (push down)
+    </div>
+
+    <h3>Obstacle Avoidance via Raycasts</h3>
+    <ul>
+      <li><strong>Forward ray:</strong> cast along v̂ up to <code>obstacleAvoidDistance</code>. On hit: <code>F_obs = Reflect(v⃗, n̂) · 10</code></li>
+      <li><strong>Ground ray:</strong> cast straight down. On hit: <code>F_obs += 10·ŷ</code></li>
+    </ul>
+
+    <h3>Force Integration &amp; Speed Clamping</h3>
+    <div class="math-block">
+      F_total = F_sep·w_sep + F_align·w_align + F_coh·w_coh + F_bounds·w_bounds + F_obs<br>
+      v ← v + F_total · Δt<br><br>
+      if |v| > maxSpeed: v = v̂ · maxSpeed<br>
+      if |v| &lt; minSpeed: v = v̂ · minSpeed<br><br>
+      p ← p + v · Δt<br>
+      R ← Slerp(R, LookRotation(v⃗), 5·Δt)   (smooth facing)
+    </div>
+    <div class="finding-box">
+      The per-frame update is O(N²) in boid count — straightforward and visual, but not optimized
+      for very large flocks (spatial hashing or compute shaders would be needed beyond ~500 agents).
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 7. Hunt -->
+  <!-- ================================================ -->
+  <div class="section-card" id="hunt">
+    <h2>7. Hunt: Wolf Pack Q-Learning &amp; Prey AI</h2>
+
+    <h3>Wolf Pack Brain — Tabular Q-Learning</h3>
+    <p>
+      The <code>PackBrain</code> class implements tabular Q-Learning, mapping environmental states
+      (prey type) to effective actions (hunting tactics).
+    </p>
+
+    <h4>State-Action Space</h4>
+    <table class="data-table">
+      <thead><tr><th>Dimension</th><th>Values</th></tr></thead>
+      <tbody>
+        <tr><td><strong>State S</strong> — prey type</td><td>Rabbit, Bear, Goat</td></tr>
+        <tr><td><strong>Action A</strong> — formation</td><td>Surround (0) · FlankV (1) · Blitz (2)</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Q-Update Rule</h4>
+    <div class="math-block">
+      Q_new(S,A) ← Q(S,A) + α · (R − Q(S,A))<br><br>
+      α = 0.5  (learning rate)
+    </div>
+
+    <h4>Reward Function</h4>
+    <div class="math-block">
+      R = +20           if hunt successful<br>
+        = −5            if hunt failed (time/energy wasted)<br>
+        = −100 · N_dead  penalty per wolf lost
+    </div>
+
+    <h4>ε-Greedy Decision Policy</h4>
+    <p>With probability ε, a random tactic is chosen (exploration); otherwise the highest Q(S,A) tactic is selected (exploitation). ε decays over time:</p>
+    <div class="math-block">
+      ε ← max(0.1, ε · 0.99)
+    </div>
+
+    <h3>Formation Geometry</h3>
+    <h4>Surround Tactic</h4>
+    <div class="math-block">
+      P_slot,i = P_prey + RotateY(360°/N · i) · F_forward · r
+    </div>
+    <h4>FlankV Tactic</h4>
+    <div class="math-block">
+      P_slot,i = P_prey − (F_prey · (r + d_i)) + (R_prey · s_i · (0.5r + d_i))<br>
+      d_i = depth,  s_i = ±1 alternating side
+    </div>
+    <h4>Greedy Slot Assignment (Prevent Path Crossing)</h4>
+    <div class="math-block">
+      s* = argmin_{s∈S} |P_w − P_s|   (assign nearest slot to each wolf, remove when claimed)
+    </div>
+
+    <h3>Hunt Phases</h3>
+    <ul>
+      <li><strong>Preparation (18 m radius):</strong> Wolves move to preparation slots and wait until 80% of the pack has assembled.</li>
+      <li><strong>Attack (2.5 m kill distance):</strong> Target radius collapses; wolves converge on the prey.</li>
+    </ul>
+
+    <h3>Individual Wolf — SettleDown Noise</h3>
+    <p>To avoid robotic crowd synchronization, a coroutine desynchronizes each wolf during the preparation phase:</p>
+    <div class="code-block">
+<span class="kw2">private</span> IEnumerator <span class="kw">SettleDownRoutine</span>()
+{
+    isSettling = <span class="kw2">true</span>;
+    <span class="cm">// 1. Random delay to desynchronize pack</span>
+    <span class="kw2">float</span> initialWait = Random.Range(<span class="num">1.0f</span>, <span class="num">4.0f</span>);
+    <span class="kw2">yield return new</span> WaitForSeconds(initialWait);
+
+    <span class="cm">// 2. "Circling" noise: move to a random offset</span>
+    Vector3 randomAdj = transform.position + (Random.insideUnitSphere * <span class="num">1.5f</span>);
+    <span class="kw2">if</span> (NavMesh.SamplePosition(randomAdj, <span class="kw2">out</span> hit, <span class="num">2f</span>, NavMesh.AllAreas))
+        agent.SetDestination(hit.position);
+
+    <span class="cm">// 3. Final micro-wait before sitting</span>
+    <span class="kw2">yield return new</span> WaitForSeconds(Random.Range(<span class="num">0.5f</span>, <span class="num">1.5f</span>));
+    SitDown();
+}</div>
+
+    <h3>Prey AI — SmartPrey</h3>
+    <p>Prey sense predators via a spherical detection zone + field-of-view raycast check. On detection, behavior branches by species:</p>
+    <table class="data-table">
+      <thead><tr><th>Species</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rabbit</strong></td><td>Multi-ray sensor (front/back/side/diagonal). If ≥3 rays detect predators → panic mode at <code>panicSpeed</code>; otherwise flee via <code>FleeFrom</code></td></tr>
+        <tr><td><strong>Goat</strong></td><td>Always flees at <code>goatFleeSpeed</code> using <code>FleeFrom</code> without extra panic logic</td></tr>
+        <tr><td><strong>Bear</strong></td><td>Stops moving; smoothly rotates to face predator — preparing for confrontation/attack</td></tr>
+      </tbody>
+    </table>
+    <p>Fleeing computes a direction away from the predator, proposes a point along that vector, validates via <code>NavMesh.SamplePosition</code>, and sets the agent destination.</p>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 8. Ski Path Generation -->
+  <!-- ================================================ -->
+  <div class="section-card" id="ski">
+    <h2>8. Ski Path Generation</h2>
+    <p>
+      For each requested trajectory T_i, a skeleton path is built from a start position using
+      terrain-following fall-line analysis and a sine-modulated turn function, then smoothed with
+      a Catmull-Rom spline.
+    </p>
+
+    <h3>Skeleton Path — Step Loop</h3>
+    <p>For each step k from 0 to S:</p>
+
+    <h4>A. Surface Analysis — The Fall Line</h4>
+    <p>A ray is cast downward; the terrain normal <strong>n</strong> is retrieved and the fall line computed:</p>
+    <div class="math-block">
+      v_fall = normalize(ProjectOnPlane(v_down, n))
+    </div>
+
+    <h4>B. Turn Logic — S-Turns</h4>
+    <div class="math-block">
+      θ_turn = A · sin(ω · k + φ_rand)<br><br>
+      A = Turn Amplitude (width of turn)<br>
+      ω = Turn Frequency (tightness)<br>
+      φ_rand = random phase offset per trajectory
+    </div>
+    <p>The target direction <strong>v_target</strong> is obtained by rotating <strong>v_fall</strong> around Y by θ_turn.</p>
+
+    <h4>C. Next Waypoint</h4>
+    <div class="math-block">
+      p_flat = p_k + (v_target · d_step)<br>
+      → raycast from above p_flat downward → p_ground
+    </div>
+
+    <h4>D. Obstacle Validation</h4>
+    <p>A linecast checks from p_k to p_ground on <code>ObstacleLayer</code>. If clear: p_{k+1} = p_ground. If blocked: path terminates at p_k.</p>
+
+    <h3>Path Smoothing — Catmull-Rom Spline</h3>
+    <p>The raw waypoint skeleton is smoothed between each pair of consecutive points P_1, P_2 using four control points:</p>
+    <div class="math-block">
+      P(t) = 0.5 · [1, t, t², t³] ·
+      | 0   2   0   0 | · [P₀]
+      | -1  0   1   0 |   [P₁]
+      | 2  -5   4  -1 |   [P₂]
+      | -1  3  -3   1 |   [P₃]
+    </div>
+    <p>Each segment is subdivided into M sub-points (<code>smoothSubdivisions</code>) to produce a high-resolution, fluid trajectory.</p>
+
+    <h3>Complexity</h3>
+    <table class="data-table">
+      <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Time complexity</td><td>O(N · S · M) — trajectories × steps × subdivisions</td></tr>
+        <tr><td>Physics cost</td><td>≈ 3 · N · S queries (2 raycasts + 1 linecast per step)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 9. Snowball Carver -->
+  <!-- ================================================ -->
+  <div class="section-card" id="snowball">
+    <h2>9. Snowball Carver</h2>
+    <p>
+      The <code>SnowballCarver</code> script governs a physical snowball that dynamically grows as
+      it rolls and carves smooth depressions into Unity terrain through a deferred command-queue system.
+    </p>
+
+    <h3>Dynamic Growth Physics</h3>
+    <p>While rolling (velocity above <code>minVelocity</code>) and below <code>maxScale</code>, scale and mass increase each frame:</p>
+    <div class="math-block">
+      ΔS = d · r · Δt<br><br>
+      d = distance moved this frame<br>
+      r = growthRate<br>
+      Δt = Time.deltaTime
+    </div>
+    <p>ΔS is applied uniformly to X, Y, and Z scale. Mass increases proportionally to maintain physical weightiness.</p>
+
+    <h3>Deferred Carving — Command Queue</h3>
+    <p>Terrain is not modified immediately. Instead, a <code>CarveCommand</code> is enqueued when <em>both</em> conditions are met:</p>
+    <ol>
+      <li><strong>Velocity threshold:</strong> the snowball is rolling (<code>isMovingFastEnough</code>)</li>
+      <li><strong>Spatial sampling:</strong> horizontal distance since last sample &gt; <code>distanceBetweenCarves</code></li>
+    </ol>
+    <p>Each command captures: <code>position</code>, <code>radiusScale</code>, and <code>executeTime = Time.time + carveDelaySeconds</code>.</p>
+    <p>Every frame, <code>ProcessCarveQueue</code> peeks at the front. If <code>Time.time ≥ executeTime</code>, the command is dequeued and applied.</p>
+
+    <h3>Terrain Deformation Mathematics</h3>
+    <h4>Coordinate Mapping</h4>
+    <div class="math-block">
+      x_hm = ⌊ (P_world.x − T_pos.x) / T_size.x · R_width ⌋<br>
+      (analogously for z_hm)
+    </div>
+
+    <h4>Spherical Cosine Falloff</h4>
+    <p>For every heightmap pixel within <code>dynamicRadius</code>, a smooth bowl-shaped depression is applied:</p>
+    <div class="math-block">
+      H_new = H_old − (Depth · cos(dist/R · π/2))
+    </div>
+    <p>This creates a smooth impression rather than a jagged hole. <code>SetHeightsDelayLOD</code> is used to efficiently update both the physics collider and the visual mesh.</p>
+    <div class="finding-box">
+      The deferred queue is essential: applying terrain modifications immediately each frame would
+      cause performance spikes and produce a "drilling" artifact when the snowball is stationary.
+      The spatial sampling threshold ensures the trail is sampled at consistent intervals regardless
+      of framerate.
+    </div>
+  </div>
+
+</div><!-- end w3-content -->
+
+<footer class="page-footer">
+  <a href="index.html">← Michael Sheroubi's Portfolio</a> &nbsp;|&nbsp; December 2025 &nbsp;|&nbsp;
+  <a href="https://canva.link/gycw533lwdo14nl" target="_blank">View Canva Presentation</a>
+</footer>
+
+</body>
+</html>
